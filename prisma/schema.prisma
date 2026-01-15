@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String     @id @default(uuid())
+  name      String
+  logoUrl   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+}
+
+model Employee {
+  id            String   @id @default(uuid())
+  slug          String   @unique // Random short ID (e.g. x9z2q)
+  name          String
+  photoUrl      String?
+  jobTitle      String?
+  whatsapp      String?
+  phone         String?
+  email         String?
+  website       String?
+  instagram     String?
+  linkedin      String?
+  googleReviews String? // URL to reviews
+  
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
