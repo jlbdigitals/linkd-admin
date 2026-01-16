@@ -18,6 +18,7 @@ model Company {
   colorTop      String?  // Hex
   colorBottom   String?  // Hex
   gradientAngle Int?     @default(135)
+  bgImageUrl    String?
 
   employees Employee[]
   customFields CustomField[]

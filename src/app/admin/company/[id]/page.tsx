@@ -61,7 +61,7 @@ export default async function CompanyPage({
                     <aside className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-gray-200 dark:border-zinc-800 h-fit sticky top-8">
                         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                             <User size={20} />
-                            Add Employee
+                            Agregar Empleado
                         </h2>
                         <EmployeeForm
                             companyId={company.id}

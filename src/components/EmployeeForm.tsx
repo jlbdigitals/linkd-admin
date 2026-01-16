@@ -130,7 +130,7 @@ export default function EmployeeForm({
 
       {/* Photo Upload */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-gray-500">Profile Photo</label>
+        <label className="text-xs font-medium text-gray-500">Foto de Perfil</label>
         {croppedImage ? (
           <div className="relative w-24 h-24 mx-auto">
             <img src={croppedImage} alt="Profile" className="w-full h-full rounded-full object-cover border-2" />
@@ -145,7 +145,7 @@ export default function EmployeeForm({
         ) : (
           <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-900">
             <Upload size={24} className="text-gray-400" />
-            <span className="text-xs text-gray-500 mt-1">Upload Photo</span>
+            <span className="text-xs text-gray-500 mt-1">Subir Foto</span>
             <input type="file" className="hidden" accept="image/*" onChange={onFileChange} />
           </label>
         )}
@@ -156,7 +156,7 @@ export default function EmployeeForm({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
           <div className="bg-white dark:bg-zinc-900 rounded-xl w-full max-w-md overflow-hidden relative flex flex-col h-[500px]">
             <div className="p-4 border-b dark:border-zinc-800 flex justify-between items-center z-10 bg-white dark:bg-zinc-900">
-              <h3 className="font-semibold">Crop Image</h3>
+              <h3 className="font-semibold">Recortar Imagen</h3>
               <button type="button" onClick={() => setIsCropping(false)} className="text-gray-500 hover:text-black dark:hover:text-white">
                 <X size={20} />
               </button>
@@ -175,7 +175,7 @@ export default function EmployeeForm({
             </div>
             <div className="p-4 bg-white dark:bg-zinc-900 border-t dark:border-zinc-800">
               <Button type="button" onClick={showCroppedImage} className="w-full">
-                Crop & Save
+                Recortar y Guardar
               </Button>
             </div>
           </div>
@@ -184,26 +184,26 @@ export default function EmployeeForm({
 
       {/* Name & Job Title */}
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-500">Full Name</label>
-        <input name="name" defaultValue={initialData?.name} placeholder="John Doe" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" required />
+        <label className="text-xs font-medium text-gray-500">Nombre Completo</label>
+        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" required />
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-500">Job Title</label>
-        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Sales Manager" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+        <label className="text-xs font-medium text-gray-500">Cargo / Título</label>
+        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
       </div>
 
       {/* Default Fields - Conditional Rendering */}
       <div className="grid grid-cols-2 gap-2">
-        {visibility.showEmail && <input name="email" defaultValue={initialData?.email} placeholder="Email" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-        {visibility.showPhone && <input name="phone" defaultValue={initialData?.phone} placeholder="Phone" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+        {visibility.showEmail && <input name="email" defaultValue={initialData?.email} placeholder="Correo electrónico" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+        {visibility.showPhone && <input name="phone" defaultValue={initialData?.phone} placeholder="Teléfono" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
       </div>
 
-      {visibility.showWhatsapp && <input name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="WhatsApp (e.g. +569...)" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showWebsite && <input name="website" defaultValue={initialData?.website} placeholder="Website" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showInstagram && <input name="instagram" defaultValue={initialData?.instagram} placeholder="Instagram URL" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showLinkedin && <input name="linkedin" defaultValue={initialData?.linkedin} placeholder="LinkedIn URL" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showGoogleReviews && <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="Google Reviews URL" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {visibility.showWhatsapp && <input name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="WhatsApp (ej: +569...)" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {visibility.showWebsite && <input name="website" defaultValue={initialData?.website} placeholder="Sitio Web" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {visibility.showInstagram && <input name="instagram" defaultValue={initialData?.instagram} placeholder="URL de Instagram" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {visibility.showLinkedin && <input name="linkedin" defaultValue={initialData?.linkedin} placeholder="URL de LinkedIn" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {visibility.showGoogleReviews && <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
 
       {/* Custom Fields */}
       {customFields.map((field) => {
@@ -229,11 +229,11 @@ export default function EmployeeForm({
       <div className="flex gap-2 mt-2">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
-            Cancel
+            Cancelar
           </Button>
         )}
         <Button type="submit" className="flex-1">
-          {initialData ? "Update" : "Add"} Employee
+          {initialData ? "Actualizar" : "Agregar"} Empleado
         </Button>
       </div>
     </form>

@@ -167,6 +167,7 @@ export async function updateCompany(formData: FormData) {
     const colorTop = formData.get("colorTop") as string;
     const colorBottom = formData.get("colorBottom") as string;
     const gradientAngle = formData.get("gradientAngle") as string;
+    const bgImageUrl = formData.get("bgImageUrl") as string;
 
     await prisma.company.update({
         where: { id },
@@ -174,7 +175,8 @@ export async function updateCompany(formData: FormData) {
             name,
             colorTop,
             colorBottom,
-            gradientAngle: gradientAngle ? parseInt(gradientAngle) : 135
+            gradientAngle: gradientAngle ? parseInt(gradientAngle) : 135,
+            bgImageUrl
         }
     });
 

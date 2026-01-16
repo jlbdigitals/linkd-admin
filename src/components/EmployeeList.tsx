@@ -54,10 +54,10 @@ export default function EmployeeList({
 
     return (
         <section className="space-y-4">
-            <h2 className="text-xl font-semibold">Employees</h2>
+            <h2 className="text-xl font-semibold">Empleados</h2>
             <div className="grid gap-3">
                 {employees.length === 0 && (
-                    <p className="text-gray-500 italic">No employees yet.</p>
+                    <p className="text-gray-500 italic">No hay empleados todavía.</p>
                 )}
                 {employees.map((emp) => (
                     <div key={emp.id} className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-gray-200 dark:border-zinc-800 flex justify-between items-center group">
@@ -84,14 +84,14 @@ export default function EmployeeList({
                             <button
                                 onClick={() => setEditingEmployee(emp)}
                                 className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                                title="Edit Employee"
+                                title="Editar Empleado"
                             >
                                 <Pencil size={16} />
                             </button>
                             <button
                                 onClick={() => setDeletingEmployee(emp)}
                                 className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                                title="Delete Employee"
+                                title="Eliminar Empleado"
                             >
                                 <Trash2 size={16} />
                             </button>
@@ -111,7 +111,7 @@ export default function EmployeeList({
             <Modal
                 isOpen={!!editingEmployee}
                 onClose={() => setEditingEmployee(null)}
-                title="Edit Employee"
+                title="Editar Empleado"
             >
                 {editingEmployee && (
                     <EmployeeForm
@@ -128,19 +128,19 @@ export default function EmployeeList({
             <Modal
                 isOpen={!!deletingEmployee}
                 onClose={() => setDeletingEmployee(null)}
-                title="Delete Employee"
+                title="Eliminar Empleado"
             >
                 <div className="space-y-4">
                     <p className="text-gray-600 dark:text-gray-300">
-                        Are you sure you want to delete <span className="font-semibold text-black dark:text-white">{deletingEmployee?.name}</span>? This action cannot be undone.
+                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-black dark:text-white">{deletingEmployee?.name}</span>? Esta acción no se puede deshacer.
                     </p>
                     <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setDeletingEmployee(null)}>
-                            Cancel
+                            Cancelar
                         </Button>
                         <form action={handleDelete}>
                             <Button type="submit" className="bg-red-600 hover:bg-red-700 text-white">
-                                Delete
+                                Eliminar
                             </Button>
                         </form>
                     </div>

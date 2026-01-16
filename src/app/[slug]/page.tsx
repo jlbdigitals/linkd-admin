@@ -145,7 +145,7 @@ export default async function ProfilePage({
                     {employee.googleReviews && (
                         <ActionButton
                             href={employee.googleReviews}
-                            label="Google Reviews"
+                            label="Reseñas de Google"
                             icon={Star}
                         />
                     )}
