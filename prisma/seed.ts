@@ -29,6 +29,9 @@ async function main() {
         data: {
             name: "Decoflat",
             logoUrl: "https://via.placeholder.com/150",
+            colorTop: "#ffffff",
+            colorBottom: "#a1a1aa",
+            gradientAngle: 135,
         },
     });
 

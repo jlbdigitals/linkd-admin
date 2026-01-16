@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react"; // Changed icon to UserPlus for "Save Contact"
+import { UserPlus } from "lucide-react";
 
 interface VCardButtonProps {
     employee: {
@@ -45,12 +44,12 @@ export function VCardButton({ employee }: VCardButtonProps) {
     };
 
     return (
-        <Button
-            className="w-full rounded-full bg-white text-black hover:bg-gray-100 font-semibold shadow-sm border border-gray-200"
+        <button
             onClick={generateVCard}
+            className="flex items-center w-full p-3 mb-3 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium text-gray-700 relative"
         >
-            <UserPlus className="mr-2 h-4 w-4" />
-            Guardar contacto
-        </Button>
+            <span className="flex-1 text-center">Guardar contacto</span>
+            <UserPlus size={18} className="absolute right-8 text-black" />
+        </button>
     );
 }

@@ -13,7 +13,15 @@ model Company {
   logoUrl   String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  
+  // Customization
+  colorTop      String?  // Hex
+  colorBottom   String?  // Hex
+  gradientAngle Int?     @default(135)
+
   employees Employee[]
+  customFields CustomField[]
+  fieldVisibility CompanyFieldVisibility?
 }
 
 model Employee {
@@ -33,6 +41,48 @@ model Employee {
   companyId     String
   company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   
+  customFieldValues EmployeeCustomField[]
+  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model CustomField {
+  id          String   @id @default(uuid())
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  label       String   // e.g., "TikTok"
+  icon        String   // Lucide icon name, e.g., "Video"
+  placeholder String?  // Optional placeholder
+  order       Int      @default(0)
+  
+  values      EmployeeCustomField[]
+  createdAt   DateTime @default(now())
+}
+
+model EmployeeCustomField {
+  id              String      @id @default(uuid())
+  employeeId      String
+  employee        Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  customFieldId   String
+  customField     CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  value           String
+  
+  @@unique([employeeId, customFieldId])
+}
+
+model CompanyFieldVisibility {
+  id        String  @id @default(uuid())
+  companyId String  @unique
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  // Default fields visibility
+  showWhatsapp      Boolean @default(true)
+  showEmail         Boolean @default(true)
+  showPhone         Boolean @default(true)
+  showWebsite       Boolean @default(true)
+  showInstagram     Boolean @default(true)
+  showLinkedin      Boolean @default(true)
+  showGoogleReviews Boolean @default(false)
 }

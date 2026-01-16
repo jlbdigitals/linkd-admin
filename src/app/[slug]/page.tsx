@@ -55,11 +55,13 @@ export default async function ProfilePage({
     }
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center p-4"
+        <main className="min-h-screen flex flex-col items-center justify-between p-4 pt-[50px]"
             style={{
-                background: "linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%)", // White to silver gradient like image
+                background: `linear-gradient(${employee.company.gradientAngle || 135}deg, ${employee.company.colorTop || "#ffffff"} 0%, ${employee.company.colorBottom || "#a1a1aa"} 100%)`,
             }}
         >
+            <div /> {/* Spacer for centering content vertically */}
+
             {/* Card Container */}
             <div className="w-full max-w-sm bg-transparent flex flex-col items-center relative">
 
@@ -153,6 +155,17 @@ export default async function ProfilePage({
                     </div>
                 </div>
 
+            </div>
+
+            {/* Footer Logo */}
+            <div className="w-full flex justify-center py-6 opacity-80 mt-auto">
+                <Image
+                    src="/powered-by-logo.png"
+                    alt="Powered By Linkd"
+                    width={120}
+                    height={30}
+                    className="object-contain"
+                />
             </div>
         </main>
     );
