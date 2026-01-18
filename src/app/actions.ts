@@ -27,10 +27,13 @@ export async function createCompany(formData: FormData) {
     const name = formData.get("name") as string;
     const logoUrl = formData.get("logoUrl") as string;
 
+    const maxEmployees = parseInt(formData.get("maxEmployees") as string) || 5;
+
     await prisma.company.create({
         data: {
             name,
             logoUrl: logoUrl || "https://via.placeholder.com/150",
+            maxEmployees
         }
     });
 
@@ -39,6 +42,30 @@ export async function createCompany(formData: FormData) {
 
 export async function createEmployee(formData: FormData) {
     const companyId = formData.get("companyId") as string;
+
+    // Check employee limit
+    const company = await prisma.company.findUnique({
+        where: { id: companyId },
+        include: {
+            _count: {
+                select: { employees: true }
+            }
+        }
+    });
+
+    if (!company) {
+        return { error: "Empresa no encontrada" };
+    }
+
+    if (company._count.employees >= company.maxEmployees) {
+        return { error: `Límite de empleados (${company.maxEmployees}) alcanzado. Contacta al administrador.` };
+    }
+
+    // Continue with creation
+
+
+
+
     const name = formData.get("name") as string;
     const jobTitle = formData.get("jobTitle") as string;
     const email = formData.get("email") as string;
@@ -186,5 +213,32 @@ export async function updateCompany(formData: FormData) {
     });
 
     revalidatePath(`/admin`);
+
     revalidatePath(`/admin/company/${id}`);
+}
+
+export async function updateCompanyLimit(formData: FormData) {
+    const id = formData.get("id") as string;
+    const maxEmployeesRaw = formData.get("maxEmployees") as string;
+
+    if (!id || !maxEmployeesRaw) {
+        console.error("Missing id or maxEmployees");
+        return;
+    }
+
+    const maxEmployees = parseInt(maxEmployeesRaw);
+    if (isNaN(maxEmployees)) {
+        console.error("Invalid maxEmployees");
+        return;
+    }
+
+    try {
+        await prisma.company.update({
+            where: { id },
+            data: { maxEmployees }
+        });
+        revalidatePath("/admin");
+    } catch (error) {
+        console.error("Error updating limit:", error);
+    }
 }

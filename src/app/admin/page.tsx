@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Building2, Plus, Users } from "lucide-react";
 import Link from "next/link";
 import { createCompany } from "../actions";
+import CompanyLimitForm from "@/components/CompanyLimitForm";
 
 export default async function AdminDashboard() {
     const companies = await prisma.company.findMany({
@@ -29,6 +30,7 @@ export default async function AdminDashboard() {
                         <h2 className="text-lg font-semibold mb-4">Crear Nueva Empresa</h2>
                         <form action={createCompany} className="flex gap-2">
                             <input name="name" placeholder="Nombre de la Empresa" className="border p-2 rounded flex-1 bg-white dark:bg-black" required />
+                            <input type="number" name="maxEmployees" placeholder="Límite Ops (5)" className="border p-2 rounded w-32 bg-white dark:bg-black" defaultValue={5} min={1} />
                             <Button type="submit" className="gap-2">
                                 <Plus size={16} />
                                 Crear
@@ -49,7 +51,10 @@ export default async function AdminDashboard() {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-lg">{company.name}</h3>
-                                        <p className="text-sm text-gray-500">{company._count.employees} empleados</p>
+                                        <div className="text-sm text-gray-500 space-y-1">
+                                            <p>{company._count.employees} empleados</p>
+                                            <CompanyLimitForm key={company.id} companyId={company.id} maxEmployees={company.maxEmployees} />
+                                        </div>
                                     </div>
                                 </div>
                                 <Users size={20} className="text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />

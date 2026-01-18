@@ -86,6 +86,7 @@ export default function EmployeeForm({
   const [isCropping, setIsCropping] = useState(false);
   const [isAdmin, setIsAdmin] = useState(initialData?.isAdmin || false);
   const [alsoPhoneCalls, setAlsoPhoneCalls] = useState(initialData?.phone ? true : false);
+  const [error, setError] = useState<string | null>(null);
 
 
   const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
@@ -133,22 +134,34 @@ export default function EmployeeForm({
   return (
     <form
       action={async (formData) => {
+        setError(null);
         if (croppedImage) {
           formData.append("photoUrl", croppedImage);
         }
         formData.append("isAdmin", isAdmin.toString()); // Append isAdmin value
+
+        let result;
         if (initialData) {
           formData.append("id", initialData.id);
           formData.append("companyId", companyId);
           await updateEmployee(formData);
           onCancel?.();
         } else {
-          await createEmployee(formData);
+          result = await createEmployee(formData);
+          if (result?.error) {
+            setError(result.error);
+          }
         }
       }}
       className="flex flex-col gap-3"
     >
       <input type="hidden" name="companyId" value={companyId} />
+
+      {error && (
+        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200">
+          {error}
+        </div>
+      )}
 
       {/* Photo Upload */}
       <div className="space-y-2">

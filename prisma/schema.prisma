@@ -20,6 +20,7 @@ model Company {
   fieldVisibility CompanyFieldVisibility?
   customFields    CustomField[]
   employees       Employee[]
+  maxEmployees    Int                     @default(5)
 }
 
 model Employee {
