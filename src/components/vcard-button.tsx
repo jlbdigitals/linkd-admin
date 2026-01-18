@@ -1,3 +1,5 @@
+"use client";
+
 import { UserPlus } from "lucide-react";
 import { recordInteraction } from "@/app/analyticsActions";
 

@@ -35,12 +35,28 @@ model Employee {
   instagram         String?
   linkedin          String?
   googleReviews     String?
+  isAdmin           Boolean               @default(false)
   companyId         String
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
   clickLogs         ClickLog[]
   company           Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
   customFieldValues EmployeeCustomField[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+  createdAt  DateTime @default(now())
+
+  @@unique([identifier, token])
+}
+
+model SuperAdmin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 model CustomField {

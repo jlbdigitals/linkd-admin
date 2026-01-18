@@ -1,0 +1,8 @@
+# Disallow scraping of profile URLs
+User-agent: *
+Disallow: /
+
+# Allow admin routes to be indexed
+User-agent: Googlebot
+Allow: /login
+Disallow: /

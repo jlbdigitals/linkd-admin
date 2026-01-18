@@ -14,6 +14,26 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Security headers for anti-scraping protection
+  async headers() {
+    return [
+      {
+        source: '/:slug([a-zA-Z0-9]{5,15})', // Profile URLs
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Cache-Control', value: 'private, no-cache' },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1,0 +1,134 @@
+"use server";
+
+import { prisma } from "@/lib/prisma";
+import { login } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+export async function requestLoginCode(formData: FormData) {
+    const email = formData.get("email") as string;
+
+    if (!email) {
+        return { error: "Email is required" };
+    }
+
+    // Check if user is Super Admin
+    const superAdmin = await prisma.superAdmin.findUnique({
+        where: { email }
+    });
+
+    let employee = null;
+    if (!superAdmin) {
+        // Check if user exists and is admin (Company Admin)
+        employee = await prisma.employee.findFirst({
+            where: { email, isAdmin: true }
+        });
+
+        if (!employee) {
+            return { error: "Acceso denegado. Verifica que eres administrador." };
+        }
+    }
+
+    // Generate 6 digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // Store token
+    await prisma.verificationToken.upsert({
+        where: {
+            identifier_token: {
+                identifier: email,
+                token: code // This composite key logic in schema might be slightly off for "upsert by email", 
+                // but schema is @@unique([identifier, token]).
+                // We actually want one active token per email usually, or just store a new one.
+                // Let's rely on deleteMany first to clean up old ones.
+            }
+        },
+        // Actually, upsert needs a unique where. The schema @@unique([identifier, token]) allows multiple tokens for same email if tokens differ.
+        // We want to Replace old tokens.
+        update: {
+            token: code,
+            expires
+        },
+        create: {
+            identifier: email,
+            token: code,
+            expires
+        },
+        // Wait, strictly speaking upsert requires a unique constraint match.
+        // If I want to "overwrite" the active code for this email, I should maybe just delete old ones.
+    });
+
+    // Better approach: clean old tokens for this email
+    await prisma.verificationToken.deleteMany({
+        where: { identifier: email }
+    });
+
+    await prisma.verificationToken.create({
+        data: {
+            identifier: email,
+            token: code,
+            expires
+        }
+    });
+
+    // Send Email (Mock)
+    console.log(`\n========================================`);
+    console.log(`LOGIN CODE FOR ${email}: ${code}`);
+    console.log(`========================================\n`);
+
+    const isDev = process.env.NODE_ENV === 'development';
+    return { success: true, email, debugCode: isDev ? code : undefined };
+}
+
+export async function verifyLoginCode(prevState: any, formData: FormData) {
+    const email = formData.get("email") as string;
+    const code = formData.get("code") as string;
+
+    if (!email || !code) {
+        return { error: "Faltan datos." };
+    }
+
+    // Find token
+    const tokenRecord = await prisma.verificationToken.findFirst({
+        where: {
+            identifier: email,
+            token: code
+        }
+    });
+
+    if (!tokenRecord) {
+        return { error: "Código inválido." };
+    }
+
+    if (tokenRecord.expires < new Date()) {
+        await prisma.verificationToken.delete({ where: { identifier_token: { identifier: email, token: code } } });
+        return { error: "El código ha expirado." };
+    }
+
+    // Valid! Clean up and Login
+    await prisma.verificationToken.deleteMany({
+        where: { identifier: email }
+    });
+
+    // Determine Role
+    const superAdmin = await prisma.superAdmin.findUnique({ where: { email } });
+    let role = "COMPANY_ADMIN";
+    let companyId = null;
+
+    if (superAdmin) {
+        role = "SUPER_ADMIN";
+    } else {
+        const employee = await prisma.employee.findFirst({ where: { email } });
+        if (employee) {
+            companyId = employee.companyId;
+        }
+    }
+
+    await login(email, role, companyId);
+
+    if (role === "SUPER_ADMIN") {
+        redirect("/admin");
+    } else {
+        redirect(`/admin/company/${companyId}`);
+    }
+}

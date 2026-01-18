@@ -45,6 +45,24 @@ function createImage(url: string): Promise<HTMLImageElement> {
   });
 }
 
+interface Employee {
+  id: string;
+  name: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  website: string;
+  instagram: string;
+  linkedin: string;
+  googleReviews: string;
+  photoUrl: string | null;
+  slug: string;
+  companyId: string;
+  isAdmin: boolean;
+  customFieldValues: Array<{ customFieldId: string; value: string }>;
+}
+
 export default function EmployeeForm({
   companyId,
   initialData,
@@ -54,7 +72,7 @@ export default function EmployeeForm({
   customFieldValues = []
 }: {
   companyId: string;
-  initialData?: any;
+  initialData?: Employee;
   onCancel?: () => void;
   customFields?: Array<{ id: string; label: string; icon: string; placeholder: string | null }>;
   fieldVisibility?: any;
@@ -66,6 +84,9 @@ export default function EmployeeForm({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(initialData?.photoUrl || null);
   const [isCropping, setIsCropping] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(initialData?.isAdmin || false);
+  const [alsoPhoneCalls, setAlsoPhoneCalls] = useState(initialData?.phone ? true : false);
+
 
   const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -115,6 +136,7 @@ export default function EmployeeForm({
         if (croppedImage) {
           formData.append("photoUrl", croppedImage);
         }
+        formData.append("isAdmin", isAdmin.toString()); // Append isAdmin value
         if (initialData) {
           formData.append("id", initialData.id);
           formData.append("companyId", companyId);
@@ -193,17 +215,81 @@ export default function EmployeeForm({
         <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
       </div>
 
-      {/* Default Fields - Conditional Rendering */}
-      <div className="grid grid-cols-2 gap-2">
-        {visibility.showEmail && <input name="email" defaultValue={initialData?.email} placeholder="Correo electrónico" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-        {visibility.showPhone && <input name="phone" defaultValue={initialData?.phone} placeholder="Teléfono" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {/* isAdmin Checkbox */}
+      <div className="flex items-center space-x-2 mt-2">
+        <input
+          type="checkbox"
+          id="isAdmin"
+          name="isAdminCheckbox" // Use a different name for the checkbox if you want to handle it separately
+          checked={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.checked)}
+          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label htmlFor="isAdmin" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Es Administrador
+        </label>
+        {/* Hidden input to ensure 'isAdmin' is always submitted, even if unchecked */}
+        <input type="hidden" name="isAdmin" value={isAdmin.toString()} />
       </div>
 
-      {visibility.showWhatsapp && <input name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="WhatsApp (ej: +569...)" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showWebsite && <input name="website" defaultValue={initialData?.website} placeholder="Sitio Web" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showInstagram && <input name="instagram" defaultValue={initialData?.instagram} placeholder="URL de Instagram" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showLinkedin && <input name="linkedin" defaultValue={initialData?.linkedin} placeholder="URL de LinkedIn" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
-      {visibility.showGoogleReviews && <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="border p-2 rounded bg-gray-50 dark:bg-black" />}
+      {/* Default Fields - Conditional Rendering */}
+      <div className="space-y-3">
+        {visibility.showEmail && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">Correo Electrónico</label>
+            <input name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+          </div>
+        )}
+
+        {visibility.showWhatsapp && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">WhatsApp</label>
+            <input name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <div className="flex items-center space-x-2 mt-1">
+              <input
+                type="checkbox"
+                id="alsoPhoneCalls"
+                checked={alsoPhoneCalls}
+                onChange={(e) => setAlsoPhoneCalls(e.target.checked)}
+                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="alsoPhoneCalls" className="text-xs text-gray-600 dark:text-gray-400">
+                También llamadas telefónicas
+              </label>
+            </div>
+            {/* Hidden field to store phone = whatsapp if checkbox checked */}
+            <input type="hidden" name="phone" value={alsoPhoneCalls ? (initialData?.whatsapp || "") : ""} />
+          </div>
+        )}
+
+        {visibility.showWebsite && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">Sitio Web</label>
+            <input name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+          </div>
+        )}
+
+        {visibility.showInstagram && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">Instagram</label>
+            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+          </div>
+        )}
+
+        {visibility.showLinkedin && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">LinkedIn</label>
+            <input name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+          </div>
+        )}
+
+        {visibility.showGoogleReviews && (
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500">Reseñas de Google</label>
+            <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+          </div>
+        )}
+      </div>
 
       {/* Custom Fields */}
       {customFields.map((field) => {

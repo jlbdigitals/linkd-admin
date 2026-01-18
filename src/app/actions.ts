@@ -3,8 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-// Simple slug generator helper
-function generateSlug(length = 5) {
+// Secure slug generator - 10 chars for ~839 quintillion combinations (anti-scraping)
+function generateSlug(length = 10) {
     const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let result = "";
     for (let i = 0; i < length; i++) {
@@ -50,6 +50,7 @@ export async function createEmployee(formData: FormData) {
     const linkedin = formData.get("linkedin") as string;
     const googleReviews = formData.get("googleReviews") as string;
     const uploadedPhotoUrl = formData.get("photoUrl") as string;
+    const isAdmin = formData.get("isAdmin") === "true";
 
     // Use a random avatar seed based on name if no photo provided
     const photoUrl = uploadedPhotoUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(/\s/g, "")}`;
@@ -69,6 +70,7 @@ export async function createEmployee(formData: FormData) {
             linkedin,
             googleReviews,
             photoUrl,
+            isAdmin,
         }
     });
 
@@ -104,7 +106,9 @@ export async function updateEmployee(formData: FormData) {
     const instagram = formData.get("instagram") as string;
     const linkedin = formData.get("linkedin") as string;
     const googleReviews = formData.get("googleReviews") as string;
+
     const uploadedPhotoUrl = formData.get("photoUrl") as string;
+    const isAdmin = formData.get("isAdmin") === "true";
 
     const data: any = {
         name,
@@ -116,6 +120,7 @@ export async function updateEmployee(formData: FormData) {
         instagram,
         linkedin,
         googleReviews,
+        isAdmin,
     };
 
     if (uploadedPhotoUrl) {

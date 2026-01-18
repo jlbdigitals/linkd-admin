@@ -12,7 +12,7 @@ export default function Home() {
           href="/login"
           className="rounded-full bg-foreground text-background px-6 py-2 font-medium hover:opacity-90 transition-opacity"
         >
-          Iniciar Sesión
+          Acceso Usuarios
         </Link>
         <Link
           href="/register"
@@ -21,6 +21,6 @@ export default function Home() {
           Registrarse
         </Link>
       </div>
-    </div>
+    </div >
   );
 }

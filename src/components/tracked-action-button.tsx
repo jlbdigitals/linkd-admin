@@ -1,19 +1,41 @@
 "use client";
 
 import { recordInteraction } from "@/app/analyticsActions";
+import {
+    Globe,
+    Instagram,
+    Linkedin,
+    Mail,
+    Phone,
+    MessageCircle,
+    Star,
+    LucideIcon
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+    MessageCircle,
+    Mail,
+    Globe,
+    Instagram,
+    Linkedin,
+    Phone,
+    Star,
+};
 
 interface TrackedActionButtonProps {
     href: string;
     label: string;
-    icon: any;
+    iconName: string;
     employeeId: string;
     buttonType: string;
 }
 
-export function TrackedActionButton({ href, label, icon: Icon, employeeId, buttonType }: TrackedActionButtonProps) {
+export function TrackedActionButton({ href, label, iconName, employeeId, buttonType }: TrackedActionButtonProps) {
     const handleClick = () => {
         recordInteraction(employeeId, "CLICK", buttonType);
     };
+
+    const Icon = iconMap[iconName] || Globe;
 
     return (
         <a

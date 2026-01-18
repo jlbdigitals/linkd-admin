@@ -67,12 +67,14 @@ export default async function ProfilePage({
                         )}
                     </div>
 
-                    <h1 className="text-xl font-bold text-gray-900 mb-1 tracking-tight uppercase">
-                        {employee.company.name}
-                    </h1>
-                    <p className="text-sm font-medium text-gray-600 mb-6">
+                    <h1 className="text-xl font-bold text-gray-900 mb-1 tracking-tight">
                         {employee.name}
-                        {employee.jobTitle && <span className="block text-xs font-normal text-gray-500 mt-1">{employee.jobTitle}</span>}
+                    </h1>
+                    {employee.jobTitle && (
+                        <p className="text-sm font-medium text-gray-600">{employee.jobTitle}</p>
+                    )}
+                    <p className="text-xs font-normal text-gray-500 mt-1 uppercase tracking-wide">
+                        {employee.company.name}
                     </p>
                 </div>
 
@@ -82,7 +84,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={`https://wa.me/${employee.whatsapp.replace(/[^0-9]/g, '')}`}
                             label="WhatsApp"
-                            icon={MessageCircle}
+                            iconName="MessageCircle"
                             employeeId={employee.id}
                             buttonType="whatsapp"
                         />
@@ -92,7 +94,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={`mailto:${employee.email}`}
                             label="Email"
-                            icon={Mail}
+                            iconName="Mail"
                             employeeId={employee.id}
                             buttonType="email"
                         />
@@ -102,7 +104,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={employee.website}
                             label="Sitio web"
-                            icon={Globe}
+                            iconName="Globe"
                             employeeId={employee.id}
                             buttonType="website"
                         />
@@ -112,7 +114,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={employee.instagram}
                             label="Instagram"
-                            icon={Instagram}
+                            iconName="Instagram"
                             employeeId={employee.id}
                             buttonType="instagram"
                         />
@@ -122,7 +124,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={employee.linkedin}
                             label="LinkedIn"
-                            icon={Linkedin}
+                            iconName="Linkedin"
                             employeeId={employee.id}
                             buttonType="linkedin"
                         />
@@ -132,7 +134,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={`tel:${employee.phone}`}
                             label="Teléfono"
-                            icon={Phone}
+                            iconName="Phone"
                             employeeId={employee.id}
                             buttonType="phone"
                         />
@@ -142,7 +144,7 @@ export default async function ProfilePage({
                         <TrackedActionButton
                             href={employee.googleReviews}
                             label="Reseñas de Google"
-                            icon={Star}
+                            iconName="Star"
                             employeeId={employee.id}
                             buttonType="googleReviews"
                         />
