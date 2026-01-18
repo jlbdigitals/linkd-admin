@@ -8,77 +8,67 @@ datasource db {
 }
 
 model Company {
-  id        String     @id @default(uuid())
-  name      String
-  logoUrl   String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  
-  // Customization
-  colorTop      String?  // Hex
-  colorBottom   String?  // Hex
-  gradientAngle Int?     @default(135)
-  bgImageUrl    String?
-
-  employees Employee[]
-  customFields CustomField[]
+  id              String                  @id @default(uuid())
+  name            String
+  logoUrl         String?
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  colorTop        String?
+  colorBottom     String?
+  gradientAngle   Int?                    @default(135)
+  bgImageUrl      String?
   fieldVisibility CompanyFieldVisibility?
+  customFields    CustomField[]
+  employees       Employee[]
 }
 
 model Employee {
-  id            String   @id @default(uuid())
-  slug          String   @unique // Random short ID (e.g. x9z2q)
-  name          String
-  photoUrl      String?
-  jobTitle      String?
-  whatsapp      String?
-  phone         String?
-  email         String?
-  website       String?
-  instagram     String?
-  linkedin      String?
-  googleReviews String? // URL to reviews
-  
-  companyId     String
-  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  
+  id                String                @id @default(uuid())
+  slug              String                @unique
+  name              String
+  photoUrl          String?
+  jobTitle          String?
+  whatsapp          String?
+  phone             String?
+  email             String?
+  website           String?
+  instagram         String?
+  linkedin          String?
+  googleReviews     String?
+  companyId         String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  clickLogs         ClickLog[]
+  company           Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
   customFieldValues EmployeeCustomField[]
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
 }
 
 model CustomField {
-  id          String   @id @default(uuid())
+  id          String                @id @default(uuid())
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  
-  label       String   // e.g., "TikTok"
-  icon        String   // Lucide icon name, e.g., "Video"
-  placeholder String?  // Optional placeholder
-  order       Int      @default(0)
-  
+  label       String
+  icon        String
+  placeholder String?
+  order       Int                   @default(0)
+  createdAt   DateTime              @default(now())
+  company     Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
   values      EmployeeCustomField[]
-  createdAt   DateTime @default(now())
 }
 
 model EmployeeCustomField {
-  id              String      @id @default(uuid())
-  employeeId      String
-  employee        Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  customFieldId   String
-  customField     CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
-  value           String
-  
+  id            String      @id @default(uuid())
+  employeeId    String
+  customFieldId String
+  value         String
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  employee      Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
   @@unique([employeeId, customFieldId])
 }
 
 model CompanyFieldVisibility {
-  id        String  @id @default(uuid())
-  companyId String  @unique
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  
-  // Default fields visibility
+  id                String  @id @default(uuid())
+  companyId         String  @unique
   showWhatsapp      Boolean @default(true)
   showEmail         Boolean @default(true)
   showPhone         Boolean @default(true)
@@ -86,4 +76,14 @@ model CompanyFieldVisibility {
   showInstagram     Boolean @default(true)
   showLinkedin      Boolean @default(true)
   showGoogleReviews Boolean @default(false)
+  company           Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model ClickLog {
+  id              String   @id @default(uuid())
+  employeeId      String
+  interactionType String
+  buttonType      String?
+  createdAt       DateTime @default(now())
+  employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }

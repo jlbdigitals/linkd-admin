@@ -12,29 +12,10 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { recordInteraction } from "@/app/analyticsActions";
+import { TrackedActionButton } from "@/components/tracked-action-button";
 
-// Helper for action buttons
-function ActionButton({
-    href,
-    label,
-    icon: Icon
-}: {
-    href: string;
-    label: string;
-    icon: any
-}) {
-    return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center w-full p-3 mb-3 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium text-gray-700"
-        >
-            <span className="flex-1 text-center">{label}</span>
-            <Icon size={18} className="absolute right-8 text-black" />
-        </a>
-    );
-}
+
 
 export default async function ProfilePage({
     params,
@@ -53,6 +34,9 @@ export default async function ProfilePage({
     if (!employee) {
         notFound();
     }
+
+    // Record profile view
+    await recordInteraction(employee.id, "VIEW");
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-between p-4 pt-[50px]"
@@ -95,58 +79,72 @@ export default async function ProfilePage({
                 {/* Action Buttons List */}
                 <div className="w-full space-y-3 relative z-10 px-4">
                     {employee.whatsapp && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={`https://wa.me/${employee.whatsapp.replace(/[^0-9]/g, '')}`}
                             label="WhatsApp"
                             icon={MessageCircle}
+                            employeeId={employee.id}
+                            buttonType="whatsapp"
                         />
                     )}
 
                     {employee.email && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={`mailto:${employee.email}`}
                             label="Email"
                             icon={Mail}
+                            employeeId={employee.id}
+                            buttonType="email"
                         />
                     )}
 
                     {employee.website && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={employee.website}
                             label="Sitio web"
                             icon={Globe}
+                            employeeId={employee.id}
+                            buttonType="website"
                         />
                     )}
 
                     {employee.instagram && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={employee.instagram}
                             label="Instagram"
                             icon={Instagram}
+                            employeeId={employee.id}
+                            buttonType="instagram"
                         />
                     )}
 
                     {employee.linkedin && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={employee.linkedin}
                             label="LinkedIn"
                             icon={Linkedin}
+                            employeeId={employee.id}
+                            buttonType="linkedin"
                         />
                     )}
 
                     {employee.phone && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={`tel:${employee.phone}`}
                             label="Teléfono"
                             icon={Phone}
+                            employeeId={employee.id}
+                            buttonType="phone"
                         />
                     )}
 
                     {employee.googleReviews && (
-                        <ActionButton
+                        <TrackedActionButton
                             href={employee.googleReviews}
                             label="Reseñas de Google"
                             icon={Star}
+                            employeeId={employee.id}
+                            buttonType="googleReviews"
                         />
                     )}
 

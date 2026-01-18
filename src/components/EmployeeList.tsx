@@ -22,7 +22,10 @@ interface Employee {
     linkedin: string | null;
     googleReviews: string | null;
     companyId: string;
-    customFieldValues?: any[];
+    customFieldValues: any[];
+    _count?: {
+        clickLogs: number;
+    };
 }
 
 export default function EmployeeList({
@@ -75,8 +78,13 @@ export default function EmployeeList({
                             )}
 
                             <div>
-                                <p className="font-medium">{emp.name}</p>
-                                <p className="text-xs text-gray-500">{emp.jobTitle}</p>
+                                <p className="text-sm font-medium text-black dark:text-white line-clamp-1">{emp.name}</p>
+                                <p className="text-xs text-gray-500 line-clamp-1">{emp.jobTitle}</p>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full font-medium">
+                                        {emp._count?.clickLogs || 0} interacciones
+                                    </span>
+                                </div>
                             </div>
                         </div>
 

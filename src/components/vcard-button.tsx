@@ -1,9 +1,9 @@
-"use client";
-
 import { UserPlus } from "lucide-react";
+import { recordInteraction } from "@/app/analyticsActions";
 
 interface VCardButtonProps {
     employee: {
+        id: string;
         name: string;
         jobTitle?: string | null;
         email?: string | null;
@@ -20,6 +20,9 @@ interface VCardButtonProps {
 
 export function VCardButton({ employee }: VCardButtonProps) {
     const generateVCard = () => {
+        // Record click
+        recordInteraction(employee.id, "CLICK", "vcard");
+
         // Construct vCard 3.0
         let vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${employee.name}\nORG:${employee.company.name}\n`;
 

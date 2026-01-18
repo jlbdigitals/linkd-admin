@@ -24,6 +24,9 @@ export default async function CompanyPage({
                         include: {
                             customField: true
                         }
+                    },
+                    _count: {
+                        select: { clickLogs: true }
                     }
                 }
             },

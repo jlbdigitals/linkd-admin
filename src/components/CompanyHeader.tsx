@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, Pencil, BarChart3 } from "lucide-react";
 import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { updateCompany } from "@/app/actions";
@@ -15,6 +15,8 @@ interface Company {
     colorBottom?: string | null;
     gradientAngle?: number | null;
     bgImageUrl?: string | null;
+    customFields: any[];
+    fieldVisibility: any;
 }
 
 export default function CompanyHeader({ company }: { company: Company }) {
@@ -22,9 +24,18 @@ export default function CompanyHeader({ company }: { company: Company }) {
 
     return (
         <header className="flex flex-col gap-4">
-            <Link href="/admin" className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">
-                <ArrowLeft size={16} /> Volver al Tablero
-            </Link>
+            <div className="flex justify-between items-start">
+                <Link href="/admin" className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">
+                    <ArrowLeft size={16} /> Volver al Tablero
+                </Link>
+                <Link
+                    href={`/admin/company/${company.id}/analytics`}
+                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20"
+                >
+                    <BarChart3 size={16} />
+                    Ver Estadísticas
+                </Link>
+            </div>
             <div className="flex justify-between items-center group">
                 <div className="flex items-center gap-3">
                     <h1 className="text-3xl font-bold tracking-tight">{company.name}</h1>
