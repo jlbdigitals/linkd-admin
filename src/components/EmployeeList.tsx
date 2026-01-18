@@ -22,6 +22,7 @@ interface Employee {
     linkedin: string | null;
     googleReviews: string | null;
     companyId: string;
+    isAdmin: boolean;
     customFieldValues: any[];
     _count?: {
         clickLogs: number;
@@ -91,14 +92,14 @@ export default function EmployeeList({
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setEditingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Editar Empleado"
                             >
                                 <Pencil size={16} />
                             </button>
                             <button
                                 onClick={() => setDeletingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Eliminar Empleado"
                             >
                                 <Trash2 size={16} />

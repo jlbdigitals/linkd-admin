@@ -207,12 +207,12 @@ export default function EmployeeForm({
       {/* Name & Job Title */}
       <div className="space-y-1">
         <label className="text-xs font-medium text-gray-500">Nombre Completo</label>
-        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" required />
+        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" required />
       </div>
 
       <div className="space-y-1">
         <label className="text-xs font-medium text-gray-500">Cargo / Título</label>
-        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
       </div>
 
       {/* isAdmin Checkbox */}
@@ -237,14 +237,14 @@ export default function EmployeeForm({
         {visibility.showEmail && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500">Correo Electrónico</label>
-            <input name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <input type="email" name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
           </div>
         )}
 
         {visibility.showWhatsapp && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500">WhatsApp</label>
-            <input name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <input type="tel" name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
             <div className="flex items-center space-x-2 mt-1">
               <input
                 type="checkbox"
@@ -265,21 +265,21 @@ export default function EmployeeForm({
         {visibility.showWebsite && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500">Sitio Web</label>
-            <input name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <input type="url" name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
           </div>
         )}
 
         {visibility.showInstagram && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500">Instagram</label>
-            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
           </div>
         )}
 
         {visibility.showLinkedin && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-500">LinkedIn</label>
-            <input name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <input type="url" name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
           </div>
         )}
 

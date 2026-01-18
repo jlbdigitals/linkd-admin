@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { VCardButton } from "@/components/vcard-button";
 import { prisma } from "@/lib/prisma";
-import {
-    Globe,
-    Instagram,
-    Linkedin,
-    Mail,
-    Phone,
-    MessageCircle,
-    Star
-} from "lucide-react";
+
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { recordInteraction } from "@/app/analyticsActions";

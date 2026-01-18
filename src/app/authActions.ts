@@ -1,8 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { login } from "@/lib/auth";
+import { login, logout as libLogout } from "@/lib/auth";
 import { redirect } from "next/navigation";
+
+export async function logout() {
+    await libLogout();
+}
 
 export async function requestLoginCode(formData: FormData) {
     const email = formData.get("email") as string;

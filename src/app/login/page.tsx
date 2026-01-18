@@ -69,7 +69,7 @@ export default function LoginPage() {
                                 name="email"
                                 required
                                 placeholder="tu@empresa.com"
-                                className="w-full border p-2 rounded bg-gray-50 dark:bg-zinc-950 dark:border-zinc-700"
+                                className="w-full border p-2 rounded bg-gray-50 dark:bg-zinc-950 dark:border-zinc-700 text-base"
                             />
                         </div>
                         <SubmitButton label="Enviar Código" />
@@ -84,7 +84,7 @@ export default function LoginPage() {
                                 required
                                 defaultValue={debugCode}
                                 placeholder="123456"
-                                className="w-full border p-2 rounded bg-gray-50 dark:bg-zinc-950 dark:border-zinc-700 font-mono text-center text-xl tracking-widest"
+                                className="w-full border p-2 rounded bg-gray-50 dark:bg-zinc-950 dark:border-zinc-700 font-mono text-center text-xl tracking-widest text-base"
                                 maxLength={6}
                             />
                         </div>
