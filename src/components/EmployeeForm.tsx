@@ -165,7 +165,7 @@ export default function EmployeeForm({
 
       {/* Photo Upload */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-gray-500">Foto de Perfil</label>
+        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Foto de Perfil</label>
         {croppedImage ? (
           <div className="relative w-24 h-24 mx-auto">
             <img src={croppedImage} alt="Profile" className="w-full h-full rounded-full object-cover border-2" />
@@ -191,8 +191,8 @@ export default function EmployeeForm({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
           <div className="bg-white dark:bg-zinc-900 rounded-xl w-full max-w-md overflow-hidden relative flex flex-col h-[500px]">
             <div className="p-4 border-b dark:border-zinc-800 flex justify-between items-center z-10 bg-white dark:bg-zinc-900">
-              <h3 className="font-semibold">Recortar Imagen</h3>
-              <button type="button" onClick={() => setIsCropping(false)} className="text-gray-500 hover:text-black dark:hover:text-white">
+              <h3 className="font-semibold text-gray-900 dark:text-white">Recortar Imagen</h3>
+              <button type="button" onClick={() => setIsCropping(false)} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
                 <X size={20} />
               </button>
             </div>
@@ -219,13 +219,13 @@ export default function EmployeeForm({
 
       {/* Name & Job Title */}
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-500">Nombre Completo</label>
-        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" required />
+        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Nombre Completo</label>
+        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" required />
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-500">Cargo / Título</label>
-        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Cargo / Título</label>
+        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
       </div>
 
       {/* isAdmin Checkbox */}
@@ -249,15 +249,15 @@ export default function EmployeeForm({
       <div className="space-y-3">
         {visibility.showEmail && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">Correo Electrónico</label>
-            <input type="email" name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Correo Electrónico</label>
+            <input type="email" name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
           </div>
         )}
 
         {visibility.showWhatsapp && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">WhatsApp</label>
-            <input type="tel" name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">WhatsApp</label>
+            <input type="tel" name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
             <div className="flex items-center space-x-2 mt-1">
               <input
                 type="checkbox"
@@ -277,29 +277,29 @@ export default function EmployeeForm({
 
         {visibility.showWebsite && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">Sitio Web</label>
-            <input type="url" name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Sitio Web</label>
+            <input type="url" name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
           </div>
         )}
 
         {visibility.showInstagram && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">Instagram</label>
-            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Instagram</label>
+            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
           </div>
         )}
 
         {visibility.showLinkedin && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">LinkedIn</label>
-            <input type="url" name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border p-2 rounded bg-gray-50 dark:bg-black text-base" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">LinkedIn</label>
+            <input type="url" name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
           </div>
         )}
 
         {visibility.showGoogleReviews && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500">Reseñas de Google</label>
-            <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="w-full border p-2 rounded bg-gray-50 dark:bg-black" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Reseñas de Google</label>
+            <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500" />
           </div>
         )}
       </div>
@@ -310,7 +310,7 @@ export default function EmployeeForm({
         const FieldIcon = (Icons as any)[field.icon] || Icons.Link;
         return (
           <div key={field.id} className="space-y-1">
-            <label className="text-xs font-medium text-gray-500 flex items-center gap-1">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
               <FieldIcon size={14} />
               {field.label}
             </label>
@@ -318,7 +318,7 @@ export default function EmployeeForm({
               name={`customField_${field.id}`}
               defaultValue={existingValue}
               placeholder={field.placeholder || field.label}
-              className="w-full border p-2 rounded bg-gray-50 dark:bg-black"
+              className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
         );
