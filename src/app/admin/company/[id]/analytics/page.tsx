@@ -59,14 +59,13 @@ export default async function AnalyticsPage({
     )[0];
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-black p-4 sm:p-8">
-            <div className="max-w-5xl mx-auto space-y-8">
-                <header className="flex flex-col gap-4">
-                    <Link href={`/admin/company/${id}`} className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">
-                        <ArrowLeft size={16} /> Volver a la Empresa
-                    </Link>
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Análisis de {company.name}</h1>
+        <div className="max-w-5xl mx-auto space-y-8">
+            <header className="flex flex-col gap-4">
+                <Link href={`/admin/company/${id}`} className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">
+                    <ArrowLeft size={16} /> Volver a la Empresa
+                </Link>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Análisis de {company.name}</h1>
                         <p className="text-muted-foreground">Rendimiento e interacciones en tiempo real</p>
                     </div>
                 </header>
@@ -174,7 +173,6 @@ export default async function AnalyticsPage({
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     );
 }

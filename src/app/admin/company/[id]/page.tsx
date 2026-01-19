@@ -40,9 +40,8 @@ export default async function CompanyPage({
     if (!company) notFound();
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-black p-4 sm:p-8">
-            <div className="max-w-5xl mx-auto space-y-8">
-                <CompanyHeader company={company} />
+        <div className="max-w-5xl mx-auto space-y-8">
+            <CompanyHeader company={company} />
 
                 {/* Custom Fields Manager */}
                 <CustomFieldManager
@@ -91,7 +90,6 @@ export default async function CompanyPage({
                         />
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

@@ -23,14 +23,13 @@ export default async function EmployeeAnalyticsPage({
     const ctr = totalViews > 0 ? (totalClicks / totalViews * 100).toFixed(1) : "0.0";
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-black p-4 sm:p-8">
-            <div className="max-w-4xl mx-auto space-y-8">
-                <header className="flex flex-col gap-4">
-                    <Link
-                        href={`/admin/company/${id}/analytics`}
-                        className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1"
-                    >
-                        <ArrowLeft size={16} /> Volver a Analíticas de Empresa
+        <div className="max-w-4xl mx-auto space-y-8">
+            <header className="flex flex-col gap-4">
+                <Link
+                    href={`/admin/company/${id}/analytics`}
+                    className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1"
+                >
+                    <ArrowLeft size={16} /> Volver a Analíticas de Empresa
                     </Link>
                     <div className="flex items-center gap-4">
                         <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden relative">
@@ -148,7 +147,6 @@ export default async function EmployeeAnalyticsPage({
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
+import Image from "next/image";
 import { requestLoginCode, verifyLoginCode } from "../authActions";
 import { Button } from "@/components/ui/button";
 
@@ -46,6 +47,9 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black p-4">
             <div className="bg-white dark:bg-zinc-900 p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-200 dark:border-zinc-800">
                 <div className="text-center mb-8">
+                    <div className="flex justify-center mb-6">
+                        <Image src="/logo.png" alt="LINKD" width={120} height={45} className="h-12 w-auto" />
+                    </div>
                     <h1 className="text-2xl font-bold tracking-tight">Acceso Administrativo</h1>
                     <p className="text-muted-foreground mt-2">
                         {step === "email"
