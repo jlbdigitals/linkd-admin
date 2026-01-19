@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { login, logout as libLogout } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { sendLoginCode } from "@/lib/email";
 
 export async function logout() {
     await libLogout();
@@ -75,12 +76,26 @@ export async function requestLoginCode(formData: FormData) {
         }
     });
 
-    // Send Email (Mock)
-    console.log(`\n========================================`);
-    console.log(`LOGIN CODE FOR ${email}: ${code}`);
-    console.log(`========================================\n`);
-
+    // Send Email
     const isDev = process.env.NODE_ENV === 'development';
+
+    // Always log in development for easy testing
+    if (isDev) {
+        console.log(`\n========================================`);
+        console.log(`LOGIN CODE FOR ${email}: ${code}`);
+        console.log(`========================================\n`);
+    }
+
+    // Send email if SMTP is configured
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        const emailResult = await sendLoginCode(email, code);
+        if (!emailResult.success) {
+            console.error('Failed to send email, but code is still valid');
+        }
+    } else {
+        console.warn('SMTP not configured. Email not sent. Configure SMTP_USER and SMTP_PASS environment variables.');
+    }
+
     return { success: true, email, debugCode: isDev ? code : undefined };
 }
 
