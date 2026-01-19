@@ -17,6 +17,7 @@ interface Company {
     bgImageUrl?: string | null;
     customFields: any[];
     fieldVisibility: any;
+    isLightText: boolean;
 }
 
 export default function CompanyHeader({ company }: { company: Company }) {
@@ -136,6 +137,20 @@ export default function CompanyHeader({ company }: { company: Company }) {
                                     }}
                                 />
                             </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
+                            <input
+                                type="checkbox"
+                                id="isLightText"
+                                name="isLightText"
+                                defaultChecked={company.isLightText}
+                                value="true"
+                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="isLightText" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Usar texto claro (blanco) para fondos oscuros
+                            </label>
                         </div>
 
                     </div>

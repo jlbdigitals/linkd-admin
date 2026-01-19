@@ -30,6 +30,8 @@ export default async function ProfilePage({
     // Record profile view
     await recordInteraction(employee.id, "VIEW");
 
+    const isLightText = employee.company.isLightText;
+
     return (
         <main className="min-h-screen flex flex-col items-center justify-between p-4 pt-[50px]"
             style={{
@@ -59,13 +61,13 @@ export default async function ProfilePage({
                         )}
                     </div>
 
-                    <h1 className="text-xl font-bold text-gray-900 mb-1 tracking-tight">
+                    <h1 className={`text-xl font-bold mb-1 tracking-tight ${isLightText ? "text-white" : "text-gray-900"}`}>
                         {employee.name}
                     </h1>
                     {employee.jobTitle && (
-                        <p className="text-sm font-medium text-gray-600">{employee.jobTitle}</p>
+                        <p className={`text-sm font-medium ${isLightText ? "text-white/90" : "text-gray-600"}`}>{employee.jobTitle}</p>
                     )}
-                    <p className="text-xs font-normal text-gray-500 mt-1 uppercase tracking-wide">
+                    <p className={`text-xs font-normal mt-1 uppercase tracking-wide ${isLightText ? "text-white/70" : "text-gray-500"}`}>
                         {employee.company.name}
                     </p>
                 </div>

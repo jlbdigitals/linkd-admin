@@ -208,7 +208,8 @@ export async function updateCompany(formData: FormData) {
             colorTop,
             colorBottom,
             gradientAngle: gradientAngle ? parseInt(gradientAngle) : 135,
-            bgImageUrl
+            bgImageUrl,
+            isLightText: formData.get("isLightText") === "true"
         }
     });
 

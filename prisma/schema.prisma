@@ -21,6 +21,7 @@ model Company {
   customFields    CustomField[]
   employees       Employee[]
   maxEmployees    Int                     @default(5)
+  isLightText     Boolean                 @default(false)
 }
 
 model Employee {
