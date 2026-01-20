@@ -45,4 +45,8 @@ next-env.d.ts
 # sqlite
 *.db
 *.db-journal
+*.sqlite
 node-env/
+
+# backups
+/backups/*.sqlite
