@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Pencil, BarChart3 } from "lucide-react";
+import { ArrowLeft, BarChart3, MessageCircle, Mail, Globe } from "lucide-react";
 import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { updateCompany } from "@/app/actions";
@@ -23,10 +23,23 @@ interface Company {
 export default function CompanyHeader({ company }: { company: Company }) {
     const [isEditing, setIsEditing] = useState(false);
 
+    // Estados para preview en tiempo real
+    const [previewColorTop, setPreviewColorTop] = useState(company.colorTop || "#ffffff");
+    const [previewColorBottom, setPreviewColorBottom] = useState(company.colorBottom || "#a1a1aa");
+    const [previewAngle, setPreviewAngle] = useState(company.gradientAngle || 135);
+    const [previewLightText, setPreviewLightText] = useState(company.isLightText);
+
+    const resetPreview = () => {
+        setPreviewColorTop(company.colorTop || "#ffffff");
+        setPreviewColorBottom(company.colorBottom || "#a1a1aa");
+        setPreviewAngle(company.gradientAngle || 135);
+        setPreviewLightText(company.isLightText);
+    };
+
     return (
         <header className="flex flex-col gap-4">
             <div className="flex justify-between items-start">
-                <Link href="/admin" className="text-sm text-gray-500 hover:text-black dark:hover:text-white flex items-center gap-1">
+                <Link href="/admin" className="text-sm text-gray-500 hover:text-black flex items-center gap-1">
                     <ArrowLeft size={16} /> Volver al Tablero
                 </Link>
                 <Link
@@ -40,130 +53,179 @@ export default function CompanyHeader({ company }: { company: Company }) {
             <div className="flex justify-between items-center group">
                 <div className="flex items-center gap-3">
                     <h1 className="text-3xl font-bold tracking-tight">{company.name}</h1>
-                    <button
+                    <Button
+                        variant="outline"
+                        size="sm"
                         onClick={() => setIsEditing(true)}
-                        className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors opacity-0 group-hover:opacity-100"
                     >
-                        <Pencil size={18} />
-                    </button>
+                        Editar
+                    </Button>
                 </div>
                 <p className="text-muted-foreground">{company.employees.length} Empleados</p>
             </div>
 
             <Modal
                 isOpen={isEditing}
-                onClose={() => setIsEditing(false)}
+                onClose={() => { setIsEditing(false); resetPreview(); }}
                 title="Editar Empresa"
             >
-                <form
-                    action={async (formData) => {
-                        await updateCompany(formData);
-                        setIsEditing(false);
-                    }}
-                    className="flex flex-col gap-4"
-                >
-                    <input type="hidden" name="id" value={company.id} />
-                    <div className="space-y-1">
-                        <label className="text-xs font-medium text-gray-500">Nombre de la Empresa</label>
-                        <input
-                            name="name"
-                            defaultValue={company.name}
-                            className="w-full border p-2 rounded bg-gray-50 dark:bg-black font-semibold text-lg"
-                            required
-                        />
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-lg space-y-4 border border-gray-100 dark:border-zinc-800">
-                        <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300">Colores de Marca y Landing Page</h3>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <label className="text-xs font-medium text-gray-500">Color Superior (Top)</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="color"
-                                        name="colorTop"
-                                        defaultValue={company.colorTop || "#ffffff"}
-                                        className="h-12 w-12 border-2 border-white dark:border-zinc-700 rounded-lg bg-transparent p-0 overflow-hidden cursor-pointer shadow-sm"
-                                    />
-                                    <input
-                                        type="text"
-                                        defaultValue={company.colorTop || "#ffffff"}
-                                        className="border p-2 rounded bg-white dark:bg-black w-full text-xs font-mono h-12"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1">
-                                <label className="text-xs font-medium text-gray-500">Color Inferior (Bottom)</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="color"
-                                        name="colorBottom"
-                                        defaultValue={company.colorBottom || "#a1a1aa"}
-                                        className="h-12 w-12 border-2 border-white dark:border-zinc-700 rounded-lg bg-transparent p-0 overflow-hidden cursor-pointer shadow-sm"
-                                    />
-                                    <input
-                                        type="text"
-                                        defaultValue={company.colorBottom || "#a1a1aa"}
-                                        className="border p-2 rounded bg-white dark:bg-black w-full text-xs font-mono h-12"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
+                <div className="flex gap-6">
+                    {/* Formulario */}
+                    <form
+                        action={async (formData) => {
+                            await updateCompany(formData);
+                            setIsEditing(false);
+                        }}
+                        className="flex flex-col gap-4 flex-1"
+                    >
+                        <input type="hidden" name="id" value={company.id} />
                         <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500">Ángulo del Degradado (Grados)</label>
-                            <div className="flex items-center gap-4">
+                            <label className="text-xs font-medium text-gray-500">Nombre de la Empresa</label>
+                            <input
+                                name="name"
+                                defaultValue={company.name}
+                                className="w-full border p-2 rounded bg-white font-semibold text-lg"
+                                required
+                            />
+                        </div>
+
+                        <div className="bg-gray-50 p-4 rounded-lg space-y-4 border border-gray-100">
+                            <h3 className="text-sm font-bold text-gray-700">Colores de Marca y Landing Page</h3>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-medium text-gray-500">Color Superior (Top)</label>
+                                    <div className="flex gap-2 items-center">
+                                        <input
+                                            type="color"
+                                            name="colorTop"
+                                            value={previewColorTop}
+                                            onChange={(e) => setPreviewColorTop(e.target.value)}
+                                            className="h-8 w-8 border border-gray-200 rounded bg-transparent p-0 overflow-hidden cursor-pointer"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={previewColorTop}
+                                            onChange={(e) => setPreviewColorTop(e.target.value)}
+                                            className="border p-1.5 rounded bg-white w-full text-xs font-mono"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <label className="text-xs font-medium text-gray-500">Color Inferior (Bottom)</label>
+                                    <div className="flex gap-2 items-center">
+                                        <input
+                                            type="color"
+                                            name="colorBottom"
+                                            value={previewColorBottom}
+                                            onChange={(e) => setPreviewColorBottom(e.target.value)}
+                                            className="h-8 w-8 border border-gray-200 rounded bg-transparent p-0 overflow-hidden cursor-pointer"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={previewColorBottom}
+                                            onChange={(e) => setPreviewColorBottom(e.target.value)}
+                                            className="border p-1.5 rounded bg-white w-full text-xs font-mono"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium text-gray-500">Ángulo del Degradado (Grados)</label>
+                                <div className="flex items-center gap-4">
+                                    <input
+                                        type="range"
+                                        name="gradientAngle"
+                                        value={previewAngle}
+                                        onChange={(e) => setPreviewAngle(Number(e.target.value))}
+                                        min="0"
+                                        max="360"
+                                        className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                    />
+                                    <input
+                                        type="number"
+                                        value={previewAngle}
+                                        onChange={(e) => setPreviewAngle(Number(e.target.value))}
+                                        className="w-16 border p-2 rounded bg-white text-xs font-mono text-center"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
                                 <input
-                                    type="range"
-                                    name="gradientAngle"
-                                    defaultValue={company.gradientAngle || 135}
-                                    min="0"
-                                    max="360"
-                                    className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                                    onInput={(e) => {
-                                        const next = e.currentTarget.nextElementSibling;
-                                        if (next) (next as HTMLInputElement).value = e.currentTarget.value;
-                                    }}
+                                    type="checkbox"
+                                    id="isLightText"
+                                    name="isLightText"
+                                    checked={previewLightText}
+                                    onChange={(e) => setPreviewLightText(e.target.checked)}
+                                    value="true"
+                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                 />
-                                <input
-                                    type="number"
-                                    defaultValue={company.gradientAngle || 135}
-                                    className="w-16 border p-2 rounded bg-white dark:bg-black text-xs font-mono text-center"
-                                    onChange={(e) => {
-                                        const prev = e.currentTarget.previousElementSibling;
-                                        if (prev) (prev as HTMLInputElement).value = e.currentTarget.value;
-                                    }}
-                                />
+                                <label htmlFor="isLightText" className="text-sm font-medium text-gray-700">
+                                    Usar texto claro (blanco) para fondos oscuros
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2">
+                            <Button type="button" variant="outline" onClick={() => { setIsEditing(false); resetPreview(); }}>
+                                Cancelar
+                            </Button>
+                            <Button type="submit">
+                                Guardar Cambios
+                            </Button>
+                        </div>
+                    </form>
+
+                    {/* Preview Miniatura */}
+                    <div className="w-48 flex-shrink-0">
+                        <p className="text-xs font-medium text-gray-500 mb-2 text-center">Vista previa</p>
+                        <div
+                            className="rounded-xl overflow-hidden shadow-lg border border-gray-200"
+                            style={{
+                                background: `linear-gradient(${previewAngle}deg, ${previewColorTop} 0%, ${previewColorBottom} 100%)`,
+                                aspectRatio: "9/16",
+                            }}
+                        >
+                            <div className="h-full flex flex-col items-center justify-center p-3">
+                                {/* Avatar placeholder */}
+                                <div className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center mb-2">
+                                    <span className="text-lg font-bold text-gray-400">JD</span>
+                                </div>
+
+                                {/* Nombre */}
+                                <p className={`text-xs font-bold ${previewLightText ? "text-white" : "text-gray-900"}`}>
+                                    Juan Pérez
+                                </p>
+                                <p className={`text-[10px] ${previewLightText ? "text-white/80" : "text-gray-600"}`}>
+                                    Director
+                                </p>
+                                <p className={`text-[8px] uppercase tracking-wide mt-0.5 ${previewLightText ? "text-white/60" : "text-gray-500"}`}>
+                                    {company.name}
+                                </p>
+
+                                {/* Botones de ejemplo */}
+                                <div className="w-full mt-3 space-y-1.5 px-2">
+                                    <div className="bg-white/90 rounded-md py-1.5 px-2 flex items-center gap-1.5 shadow-sm">
+                                        <MessageCircle size={10} className="text-green-600" />
+                                        <span className="text-[8px] font-medium text-gray-700">WhatsApp</span>
+                                    </div>
+                                    <div className="bg-white/90 rounded-md py-1.5 px-2 flex items-center gap-1.5 shadow-sm">
+                                        <Mail size={10} className="text-blue-600" />
+                                        <span className="text-[8px] font-medium text-gray-700">Email</span>
+                                    </div>
+                                    <div className="bg-white/90 rounded-md py-1.5 px-2 flex items-center gap-1.5 shadow-sm">
+                                        <Globe size={10} className="text-purple-600" />
+                                        <span className="text-[8px] font-medium text-gray-700">Sitio web</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
-                            <input
-                                type="checkbox"
-                                id="isLightText"
-                                name="isLightText"
-                                defaultChecked={company.isLightText}
-                                value="true"
-                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                            />
-                            <label htmlFor="isLightText" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Usar texto claro (blanco) para fondos oscuros
-                            </label>
-                        </div>
-
                     </div>
-
-                    <div className="flex justify-end gap-2 pt-2">
-                        <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
-                            Cancelar
-                        </Button>
-                        <Button type="submit">
-                            Guardar Cambios
-                        </Button>
-                    </div>
-                </form>
+                </div>
             </Modal>
         </header>
     );

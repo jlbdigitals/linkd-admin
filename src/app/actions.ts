@@ -13,6 +13,19 @@ function generateSlug(length = 10) {
     return result;
 }
 
+function slugify(text: string) {
+    return text
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "")
+        .replace(/\-\-+/g, "-")
+        .replace(/^-+/, "")
+        .replace(/-+$/, "");
+}
+
 // Helper to normalize website URLs
 function normalizeUrl(url: string | null | undefined): string | null {
     if (!url || url.trim() === "") return null;
@@ -28,16 +41,47 @@ export async function createCompany(formData: FormData) {
     const logoUrl = formData.get("logoUrl") as string;
 
     const maxEmployees = parseInt(formData.get("maxEmployees") as string) || 5;
+    const ownerEmail = formData.get("ownerEmail") as string;
 
     await prisma.company.create({
         data: {
             name,
+            slug: `${slugify(name)}-${generateSlug(4)}`, // Ensure uniqueness
             logoUrl: logoUrl || "https://via.placeholder.com/150",
-            maxEmployees
+            maxEmployees,
+            ownerEmail
         }
     });
 
     revalidatePath("/admin");
+}
+
+export async function softDeleteCompany(formData: FormData) {
+    const id = formData.get("id") as string;
+    await prisma.company.update({
+        where: { id },
+        data: { deletedAt: new Date() }
+    });
+    revalidatePath("/admin");
+    revalidatePath("/admin/trash");
+}
+
+export async function restoreCompany(formData: FormData) {
+    const id = formData.get("id") as string;
+    await prisma.company.update({
+        where: { id },
+        data: { deletedAt: null }
+    });
+    revalidatePath("/admin");
+    revalidatePath("/admin/trash");
+}
+
+export async function permanentDeleteCompany(formData: FormData) {
+    const id = formData.get("id") as string;
+    await prisma.company.delete({
+        where: { id }
+    });
+    revalidatePath("/admin/trash");
 }
 
 export async function createEmployee(formData: FormData) {
@@ -154,9 +198,11 @@ export async function updateEmployee(formData: FormData) {
         data.photoUrl = uploadedPhotoUrl;
     }
 
-    await prisma.employee.update({
+    // Get employee with company for revalidation
+    const employee = await prisma.employee.update({
         where: { id },
-        data
+        data,
+        include: { company: true }
     });
 
     // Handle custom field values - delete old ones and create new ones
@@ -180,6 +226,8 @@ export async function updateEmployee(formData: FormData) {
     }
 
     revalidatePath(`/admin/company/${companyId}`);
+    // Revalidate the public landing page
+    revalidatePath(`/${employee.company.slug}/${employee.slug}`);
 }
 
 export async function deleteEmployee(formData: FormData) {
@@ -200,6 +248,7 @@ export async function updateCompany(formData: FormData) {
     const colorBottom = formData.get("colorBottom") as string;
     const gradientAngle = formData.get("gradientAngle") as string;
     const bgImageUrl = formData.get("bgImageUrl") as string;
+    const ownerEmail = formData.get("ownerEmail") as string;
 
     await prisma.company.update({
         where: { id },
@@ -209,7 +258,8 @@ export async function updateCompany(formData: FormData) {
             colorBottom,
             gradientAngle: gradientAngle ? parseInt(gradientAngle) : 135,
             bgImageUrl,
-            isLightText: formData.get("isLightText") === "true"
+            isLightText: formData.get("isLightText") === "true",
+            ownerEmail
         }
     });
 
