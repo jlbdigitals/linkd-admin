@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getEmployeeAnalytics } from "../actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EmployeeAnalyticsPage({
     params,
 }: {

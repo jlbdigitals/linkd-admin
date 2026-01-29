@@ -5,6 +5,8 @@ import Link from "next/link";
 import { restoreCompany } from "@/app/actions";
 import PermanentDeleteButton from "@/components/PermanentDeleteButton";
 
+export const dynamic = 'force-dynamic';
+
 export default async function TrashPage() {
     const deletedCompanies = await prisma.company.findMany({
         where: {

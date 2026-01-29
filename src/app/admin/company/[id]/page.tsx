@@ -8,6 +8,8 @@ import EmployeeList from "@/components/EmployeeList";
 import CompanyHeader from "@/components/CompanyHeader";
 import CustomFieldManager from "@/components/CustomFieldManager";
 
+export const dynamic = 'force-dynamic';
+
 export default async function CompanyPage({
     params,
 }: {
