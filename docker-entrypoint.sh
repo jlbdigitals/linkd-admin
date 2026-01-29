@@ -17,6 +17,12 @@ if echo "$DATABASE_URL" | grep -q "file:"; then
   DB_DIR=$(dirname "$DB_PATH")
   echo "Creating database directory: $DB_DIR"
   mkdir -p "$DB_DIR"
+  
+  # Remove old database if it exists (for migration fix)
+  if [ -f "$DB_PATH" ]; then
+    echo "Found existing database, removing to apply all migrations from scratch..."
+    rm -f "$DB_PATH"
+  fi
 fi
 
 # Run Prisma migrations or db push
