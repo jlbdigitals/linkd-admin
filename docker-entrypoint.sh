@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
 
-echo "=== Starting application initialization ==="
+echo "=== Docker Entrypoint Started ==="
+echo "Current directory: $(pwd)"
+echo "User: $(whoami)"
 
 # Check if DATABASE_URL is set
 if [ -z "$DATABASE_URL" ]; then
@@ -9,32 +11,37 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
-echo "DATABASE_URL is set"
+echo "DATABASE_URL is set: $DATABASE_URL"
 
-# Create database directory if using SQLite
-if echo "$DATABASE_URL" | grep -q "file:"; then
-  DB_PATH=$(echo "$DATABASE_URL" | sed 's/file://')
-  DB_DIR=$(dirname "$DB_PATH")
-  echo "Creating database directory: $DB_DIR"
-  mkdir -p "$DB_DIR"
-  
-  # Remove old database if it exists (for migration fix)
-  if [ -f "$DB_PATH" ]; then
-    echo "Found existing database, removing to apply all migrations from scratch..."
-    rm -f "$DB_PATH"
-  fi
+# Create data directory with proper permissions
+echo "Creating /app/data directory..."
+mkdir -p /app/data
+
+# For fresh deployment, remove old database
+if [ -f "/app/data/database.sqlite" ]; then
+  echo "Removing old database for clean migration..."
+  rm -f /app/data/database.sqlite
+  rm -f /app/data/database.sqlite-journal
 fi
 
-# Run Prisma migrations or db push
-if [ -d "./prisma/migrations" ]; then
-  echo "Running prisma migrate deploy..."
-  node_modules/.bin/prisma migrate deploy
+# Run Prisma migrations
+echo "Running prisma migrate deploy..."
+if [ -x "./node_modules/.bin/prisma" ]; then
+  ./node_modules/.bin/prisma migrate deploy
 else
-  echo "No migrations found, running prisma db push..."
-  node_modules/.bin/prisma db push --accept-data-loss
+  echo "ERROR: Prisma binary not found or not executable"
+  ls -la ./node_modules/.bin/prisma || echo "File does not exist"
+  exit 1
 fi
 
-echo "Database setup complete"
+echo "Database migrations complete"
+
+# Check if server.js exists
+if [ ! -f "server.js" ]; then
+  echo "ERROR: server.js not found"
+  ls -la
+  exit 1
+fi
 
 # Start the application
 echo "Starting Next.js server..."
