@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/theme-toggle";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,9 +30,8 @@ export function AdminHeader() {
                 </div>
 
                 <div className="flex items-center space-x-2 justify-end">
-                    <ModeToggle />
                     <form action={logout}>
-                        <button type="submit" className="p-2 text-red-500 hover:text-red-600 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20" title="Cerrar Sesión">
+                        <button type="submit" className="p-2 text-red-500 hover:text-red-600 rounded-full hover:bg-red-50" title="Cerrar Sesión">
                             <LogOut size={20} />
                         </button>
                     </form>

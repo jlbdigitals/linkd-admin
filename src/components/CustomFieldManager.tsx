@@ -106,7 +106,7 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                     {customFields.map((field) => {
                         const FieldIcon = (Icons as any)[field.icon] || Icons.Link;
                         return (
-                            <div key={field.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-900 rounded-lg border">
+                            <div key={field.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
                                 <div className="flex items-center gap-3">
                                     <FieldIcon size={18} className="text-gray-600" />
                                     <span className="font-medium">{field.label}</span>
@@ -140,7 +140,7 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                         <input
                             name="label"
                             placeholder="ej: TikTok, YouTube, etc."
-                            className="w-full border p-2 rounded bg-gray-50 dark:bg-black"
+                            className="w-full border p-2 rounded bg-gray-50"
                             required
                         />
                     </div>
@@ -150,13 +150,13 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                         <input
                             name="placeholder"
                             placeholder="ej: URL de TikTok"
-                            className="w-full border p-2 rounded bg-gray-50 dark:bg-black"
+                            className="w-full border p-2 rounded bg-gray-50"
                         />
                     </div>
 
                     <div className="space-y-2">
                         <label className="text-xs font-medium text-gray-500">Ícono</label>
-                        <div className="flex items-center gap-2 p-2 border rounded bg-gray-50 dark:bg-black">
+                        <div className="flex items-center gap-2 p-2 border rounded bg-gray-50">
                             <IconComponent size={20} />
                             <span className="text-sm">{selectedIcon}</span>
                         </div>
@@ -168,7 +168,7 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                                         key={iconName}
                                         type="button"
                                         onClick={() => setSelectedIcon(iconName)}
-                                        className={`p-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 ${selectedIcon === iconName ? "bg-blue-100 dark:bg-blue-900" : ""
+                                        className={`p-2 rounded hover:bg-gray-100 ${selectedIcon === iconName ? "bg-blue-100" : ""
                                             }`}
                                     >
                                         <Icon size={20} />
@@ -196,13 +196,13 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                     {DEFAULT_FIELDS.map((field) => {
                         const isVisible = (visibility as any)[`show${field.key.charAt(0).toUpperCase() + field.key.slice(1)}`];
                         return (
-                            <div key={field.key} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-900 rounded-lg">
+                            <div key={field.key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                 <span className="font-medium">{field.label}</span>
                                 <button
                                     onClick={() => handleToggleVisibility(field.key, isVisible)}
                                     className={`p-2 rounded-full transition-colors ${isVisible
-                                            ? "bg-green-100 text-green-600 hover:bg-green-200"
-                                            : "bg-gray-200 text-gray-400 hover:bg-gray-300"
+                                        ? "bg-green-100 text-green-600 hover:bg-green-200"
+                                        : "bg-gray-200 text-gray-400 hover:bg-gray-300"
                                         }`}
                                 >
                                     {isVisible ? <Eye size={18} /> : <EyeOff size={18} />}

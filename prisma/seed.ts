@@ -13,6 +13,7 @@ async function main() {
         create: {
             id: 'galactic-gourmet-id',
             name: 'Galactic Gourmet',
+            slug: 'galactic-gourmet',
             // Cosmic gradient
             colorTop: '#1a1a2e',
             colorBottom: '#16213e',

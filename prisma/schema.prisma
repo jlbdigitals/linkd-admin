@@ -10,6 +10,7 @@ datasource db {
 model Company {
   id              String                  @id @default(uuid())
   name            String
+  slug            String                  @unique
   logoUrl         String?
   createdAt       DateTime                @default(now())
   updatedAt       DateTime                @updatedAt
@@ -22,6 +23,8 @@ model Company {
   employees       Employee[]
   maxEmployees    Int                     @default(5)
   isLightText     Boolean                 @default(false)
+  deletedAt       DateTime?
+  ownerEmail      String?
 }
 
 model Employee {

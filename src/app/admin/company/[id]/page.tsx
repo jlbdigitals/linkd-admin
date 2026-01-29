@@ -43,53 +43,54 @@ export default async function CompanyPage({
         <div className="max-w-5xl mx-auto space-y-8">
             <CompanyHeader company={company} />
 
-                {/* Custom Fields Manager */}
-                <CustomFieldManager
+            {/* Custom Fields Manager */}
+            <CustomFieldManager
+                companyId={company.id}
+                customFields={company.customFields}
+                fieldVisibility={company.fieldVisibility}
+            />
+
+            <div className="grid lg:grid-cols-[1fr_350px] gap-8">
+                {/* Employee List */}
+                <EmployeeList
+                    employees={company.employees}
                     companyId={company.id}
+                    companySlug={company.slug}
                     customFields={company.customFields}
                     fieldVisibility={company.fieldVisibility}
                 />
 
-                <div className="grid lg:grid-cols-[1fr_350px] gap-8">
-                    {/* Employee List */}
-                    <EmployeeList
-                        employees={company.employees}
+                {/* Add Employee Sidebar */}
+                <aside className="bg-white p-6 rounded-xl border border-gray-200 h-fit sticky top-8">
+                    <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                        <User size={20} />
+                        Agregar Empleado
+                    </h2>
+
+                    {/* Employee Limit Indicator */}
+                    <div className="mb-4">
+                        <div className="flex justify-between text-sm mb-1 text-gray-600">
+                            <span>Uso del Plan</span>
+                            <span>{company.employees.length} / {company.maxEmployees}</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div
+                                className={`h-2.5 rounded-full ${company.employees.length >= company.maxEmployees ? 'bg-red-500' : 'bg-blue-600'}`}
+                                style={{ width: `${Math.min((company.employees.length / company.maxEmployees) * 100, 100)}%` }}
+                            ></div>
+                        </div>
+                        {company.employees.length >= company.maxEmployees && (
+                            <p className="text-xs text-red-500 mt-1 font-medium">Límite alcanzado.</p>
+                        )}
+                    </div>
+
+                    <EmployeeForm
                         companyId={company.id}
                         customFields={company.customFields}
                         fieldVisibility={company.fieldVisibility}
                     />
-
-                    {/* Add Employee Sidebar */}
-                    <aside className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-gray-200 dark:border-zinc-800 h-fit sticky top-8">
-                        <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                            <User size={20} />
-                            Agregar Empleado
-                        </h2>
-
-                        {/* Employee Limit Indicator */}
-                        <div className="mb-4">
-                            <div className="flex justify-between text-sm mb-1 text-gray-600 dark:text-gray-400">
-                                <span>Uso del Plan</span>
-                                <span>{company.employees.length} / {company.maxEmployees}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2.5">
-                                <div
-                                    className={`h-2.5 rounded-full ${company.employees.length >= company.maxEmployees ? 'bg-red-500' : 'bg-blue-600'}`}
-                                    style={{ width: `${Math.min((company.employees.length / company.maxEmployees) * 100, 100)}%` }}
-                                ></div>
-                            </div>
-                            {company.employees.length >= company.maxEmployees && (
-                                <p className="text-xs text-red-500 mt-1 font-medium">Límite alcanzado.</p>
-                            )}
-                        </div>
-
-                        <EmployeeForm
-                            companyId={company.id}
-                            customFields={company.customFields}
-                            fieldVisibility={company.fieldVisibility}
-                        />
-                    </aside>
-                </div>
+                </aside>
+            </div>
         </div>
     );
 }

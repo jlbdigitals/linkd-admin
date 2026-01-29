@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { createEmployee, updateEmployee } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import Cropper from "react-easy-crop";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Camera } from "lucide-react";
 import * as Icons from "lucide-react";
 
 // ... (keep existing getCroppedImg function - lines 8-51)
@@ -48,14 +48,14 @@ function createImage(url: string): Promise<HTMLImageElement> {
 interface Employee {
   id: string;
   name: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  whatsapp: string;
-  website: string;
-  instagram: string;
-  linkedin: string;
-  googleReviews: string;
+  jobTitle: string | null;
+  email: string | null;
+  phone: string | null;
+  whatsapp: string | null;
+  website: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+  googleReviews: string | null;
   photoUrl: string | null;
   slug: string;
   companyId: string;
@@ -165,7 +165,7 @@ export default function EmployeeForm({
 
       {/* Photo Upload */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Foto de Perfil</label>
+        <label className="text-xs font-medium text-gray-600">Foto de Perfil</label>
         {croppedImage ? (
           <div className="relative w-24 h-24 mx-auto">
             <img src={croppedImage} alt="Profile" className="w-full h-full rounded-full object-cover border-2" />
@@ -178,54 +178,63 @@ export default function EmployeeForm({
             </button>
           </div>
         ) : (
-          <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-900">
-            <Upload size={24} className="text-gray-400" />
-            <span className="text-xs text-gray-500 mt-1">Subir Foto</span>
-            <input type="file" className="hidden" accept="image/*" onChange={onFileChange} />
-          </label>
+          <div className="flex gap-2 w-full">
+            <label className="flex flex-col items-center justify-center flex-1 h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+              <Upload size={24} className="text-gray-400" />
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mt-1">Galería</span>
+              <input type="file" className="hidden" accept="image/*" onChange={onFileChange} />
+            </label>
+            <label className="flex flex-col items-center justify-center flex-1 h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+              <Camera size={24} className="text-gray-400" />
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mt-1">Cámara</span>
+              <input type="file" className="hidden" accept="image/*" capture="environment" onChange={onFileChange} />
+            </label>
+          </div>
         )}
       </div>
 
       {/* Cropping Modal */}
-      {isCropping && imageSrc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl w-full max-w-md overflow-hidden relative flex flex-col h-[500px]">
-            <div className="p-4 border-b dark:border-zinc-800 flex justify-between items-center z-10 bg-white dark:bg-zinc-900">
-              <h3 className="font-semibold text-gray-900 dark:text-white">Recortar Imagen</h3>
-              <button type="button" onClick={() => setIsCropping(false)} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="relative flex-1 bg-black">
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-                cropShape="round"
-              />
-            </div>
-            <div className="p-4 bg-white dark:bg-zinc-900 border-t dark:border-zinc-800">
-              <Button type="button" onClick={showCroppedImage} className="w-full">
-                Recortar y Guardar
-              </Button>
+      {
+        isCropping && imageSrc && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+            <div className="bg-white rounded-xl w-full max-w-md overflow-hidden relative flex flex-col h-[500px]">
+              <div className="p-4 border-b flex justify-between items-center z-10 bg-white">
+                <h3 className="font-semibold text-gray-900">Recortar Imagen</h3>
+                <button type="button" onClick={() => setIsCropping(false)} className="text-gray-500 hover:text-black">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="relative flex-1 bg-black">
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                  cropShape="round"
+                />
+              </div>
+              <div className="p-4 bg-white border-t">
+                <Button type="button" onClick={showCroppedImage} className="w-full">
+                  Recortar y Guardar
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Name & Job Title */}
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Nombre Completo</label>
-        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" required />
+        <label className="text-xs font-medium text-gray-600">Nombre Completo</label>
+        <input name="name" defaultValue={initialData?.name} placeholder="Juan Pérez" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" required />
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Cargo / Título</label>
-        <input name="jobTitle" defaultValue={initialData?.jobTitle} placeholder="Gerente de Ventas" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+        <label className="text-xs font-medium text-gray-600">Cargo / Título</label>
+        <input name="jobTitle" defaultValue={initialData?.jobTitle ?? undefined} placeholder="Gerente de Ventas" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
       </div>
 
       {/* isAdmin Checkbox */}
@@ -238,7 +247,7 @@ export default function EmployeeForm({
           onChange={(e) => setIsAdmin(e.target.checked)}
           className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
         />
-        <label htmlFor="isAdmin" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label htmlFor="isAdmin" className="text-sm font-medium text-gray-700">
           Es Administrador
         </label>
         {/* Hidden input to ensure 'isAdmin' is always submitted, even if unchecked */}
@@ -249,15 +258,15 @@ export default function EmployeeForm({
       <div className="space-y-3">
         {visibility.showEmail && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Correo Electrónico</label>
-            <input type="email" name="email" defaultValue={initialData?.email} placeholder="ejemplo@correo.com" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+            <label className="text-xs font-medium text-gray-600">Correo Electrónico</label>
+            <input type="email" name="email" defaultValue={initialData?.email ?? undefined} placeholder="ejemplo@correo.com" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
           </div>
         )}
 
         {visibility.showWhatsapp && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">WhatsApp</label>
-            <input type="tel" name="whatsapp" defaultValue={initialData?.whatsapp} placeholder="+56 9 1234 5678" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+            <label className="text-xs font-medium text-gray-600">WhatsApp</label>
+            <input type="tel" name="whatsapp" defaultValue={initialData?.whatsapp ?? undefined} placeholder="+56 9 1234 5678" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
             <div className="flex items-center space-x-2 mt-1">
               <input
                 type="checkbox"
@@ -266,7 +275,7 @@ export default function EmployeeForm({
                 onChange={(e) => setAlsoPhoneCalls(e.target.checked)}
                 className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor="alsoPhoneCalls" className="text-xs text-gray-600 dark:text-gray-400">
+              <label htmlFor="alsoPhoneCalls" className="text-xs text-gray-600">
                 También llamadas telefónicas
               </label>
             </div>
@@ -277,52 +286,54 @@ export default function EmployeeForm({
 
         {visibility.showWebsite && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Sitio Web</label>
-            <input type="url" name="website" defaultValue={initialData?.website} placeholder="www.ejemplo.com" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+            <label className="text-xs font-medium text-gray-600">Sitio Web</label>
+            <input type="url" name="website" defaultValue={initialData?.website ?? undefined} placeholder="www.ejemplo.com" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
           </div>
         )}
 
         {visibility.showInstagram && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Instagram</label>
-            <input name="instagram" defaultValue={initialData?.instagram} placeholder="@tu_usuario" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+            <label className="text-xs font-medium text-gray-600">Instagram</label>
+            <input name="instagram" defaultValue={initialData?.instagram ?? undefined} placeholder="@tu_usuario" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
           </div>
         )}
 
         {visibility.showLinkedin && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">LinkedIn</label>
-            <input type="url" name="linkedin" defaultValue={initialData?.linkedin} placeholder="linkedin.com/in/tu-perfil" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base" />
+            <label className="text-xs font-medium text-gray-600">LinkedIn</label>
+            <input type="url" name="linkedin" defaultValue={initialData?.linkedin ?? undefined} placeholder="linkedin.com/in/tu-perfil" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400 text-base" />
           </div>
         )}
 
         {visibility.showGoogleReviews && (
           <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Reseñas de Google</label>
-            <input name="googleReviews" defaultValue={initialData?.googleReviews} placeholder="URL de Google Reviews" className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500" />
+            <label className="text-xs font-medium text-gray-600">Reseñas de Google</label>
+            <input name="googleReviews" defaultValue={initialData?.googleReviews ?? undefined} placeholder="URL de Google Reviews" className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400" />
           </div>
         )}
       </div>
 
       {/* Custom Fields */}
-      {customFields.map((field) => {
-        const existingValue = customFieldValues.find(v => v.customFieldId === field.id)?.value || "";
-        const FieldIcon = (Icons as any)[field.icon] || Icons.Link;
-        return (
-          <div key={field.id} className="space-y-1">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
-              <FieldIcon size={14} />
-              {field.label}
-            </label>
-            <input
-              name={`customField_${field.id}`}
-              defaultValue={existingValue}
-              placeholder={field.placeholder || field.label}
-              className="w-full border border-gray-300 dark:border-zinc-600 p-2 rounded bg-white dark:bg-zinc-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
-            />
-          </div>
-        );
-      })}
+      {
+        customFields.map((field) => {
+          const existingValue = customFieldValues.find(v => v.customFieldId === field.id)?.value || "";
+          const FieldIcon = (Icons as any)[field.icon] || Icons.Link;
+          return (
+            <div key={field.id} className="space-y-1">
+              <label className="text-xs font-medium text-gray-600 flex items-center gap-1">
+                <FieldIcon size={14} />
+                {field.label}
+              </label>
+              <input
+                name={`customField_${field.id}`}
+                defaultValue={existingValue}
+                placeholder={field.placeholder || field.label}
+                className="w-full border border-gray-300 p-2 rounded bg-white text-gray-900 placeholder:text-gray-400"
+              />
+            </div>
+          );
+        })
+      }
 
       {/* Submit Buttons */}
       <div className="flex gap-2 mt-2">
@@ -335,6 +346,6 @@ export default function EmployeeForm({
           {initialData ? "Actualizar" : "Agregar"} Empleado
         </Button>
       </div>
-    </form>
+    </form >
   );
 }

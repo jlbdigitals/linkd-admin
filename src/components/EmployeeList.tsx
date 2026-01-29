@@ -32,12 +32,14 @@ interface Employee {
 export default function EmployeeList({
     employees,
     companyId,
+    companySlug,
     customFields = [],
     fieldVisibility,
     employeeCustomFieldValues = []
 }: {
     employees: Employee[],
     companyId: string,
+    companySlug: string,
     customFields?: any[],
     fieldVisibility?: any,
     employeeCustomFieldValues?: any[]
@@ -64,7 +66,7 @@ export default function EmployeeList({
                     <p className="text-gray-500 italic">No hay empleados todavía.</p>
                 )}
                 {employees.map((emp) => (
-                    <div key={emp.id} className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-gray-200 dark:border-zinc-800 flex justify-between items-center group">
+                    <div key={emp.id} className="bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center group">
                         <div className="flex items-center gap-3">
                             {emp.photoUrl ? (
                                 <img
@@ -79,10 +81,10 @@ export default function EmployeeList({
                             )}
 
                             <div>
-                                <p className="text-sm font-medium text-black dark:text-white line-clamp-1">{emp.name}</p>
+                                <p className="text-sm font-medium text-black line-clamp-1">{emp.name}</p>
                                 <p className="text-xs text-gray-500 line-clamp-1">{emp.jobTitle}</p>
                                 <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full font-medium">
+                                    <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full font-medium">
                                         {emp._count?.clickLogs || 0} interacciones
                                     </span>
                                 </div>
@@ -92,24 +94,24 @@ export default function EmployeeList({
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setEditingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Editar Empleado"
                             >
                                 <Pencil size={16} />
                             </button>
                             <button
                                 onClick={() => setDeletingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Eliminar Empleado"
                             >
                                 <Trash2 size={16} />
                             </button>
                             <Link
-                                href={`/${emp.slug}`}
+                                href={`/${companySlug}/${emp.slug}`}
                                 target="_blank"
                                 className="flex items-center gap-1 text-sm text-blue-600 hover:underline ml-1"
                             >
-                                <span className="font-mono bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-gray-600 dark:text-gray-400">/{emp.slug}</span>
+                                <span className="font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-600">/{emp.slug}</span>
                                 <ExternalLink size={14} />
                             </Link>
                         </div>
@@ -140,8 +142,8 @@ export default function EmployeeList({
                 title="Eliminar Empleado"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-600 dark:text-gray-300">
-                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-black dark:text-white">{deletingEmployee?.name}</span>? Esta acción no se puede deshacer.
+                    <p className="text-gray-600">
+                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-black">{deletingEmployee?.name}</span>? Esta acción no se puede deshacer.
                     </p>
                     <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setDeletingEmployee(null)}>

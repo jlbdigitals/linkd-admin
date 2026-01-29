@@ -29,7 +29,13 @@ export async function requestLoginCode(formData: FormData) {
         });
 
         if (!employee) {
-            return { error: "Acceso denegado. Verifica que eres administrador." };
+            // Check if user is an owner by email
+            const company = await prisma.company.findFirst({
+                where: { ownerEmail: email }
+            });
+            if (!company) {
+                return { error: "Acceso denegado. Verifica que eres administrador." };
+            }
         }
     }
 
@@ -137,9 +143,14 @@ export async function verifyLoginCode(prevState: any, formData: FormData) {
     if (superAdmin) {
         role = "SUPER_ADMIN";
     } else {
-        const employee = await prisma.employee.findFirst({ where: { email } });
+        const employee = await prisma.employee.findFirst({ where: { email, isAdmin: true } });
         if (employee) {
             companyId = employee.companyId;
+        } else {
+            const company = await prisma.company.findFirst({ where: { ownerEmail: email } });
+            if (company) {
+                companyId = company.id;
+            }
         }
     }
 
