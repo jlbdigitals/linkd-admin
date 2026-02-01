@@ -154,6 +154,7 @@ async function main() {
             });
         }
 
+        console.log('Generating interactions...');
         // Batch insert clicks
         // SQLite might have limits on variables, so we do it in chunks if huge, 
         // but 200 items is fine.
@@ -162,9 +163,18 @@ async function main() {
                 data: clicks
             });
         }
-        console.log(`Generated ${clicks.length} interactions for ${employee.name}`);
     }
 
+    // 5. Create Super Admin
+    await prisma.superAdmin.upsert({
+        where: { email: 'jaime@digitals.cl' },
+        update: {},
+        create: {
+            email: 'jaime@digitals.cl'
+        }
+    });
+
+    console.log('Created Super Admin: jaime@digitals.cl');
     console.log('Seeding finished.');
 }
 
