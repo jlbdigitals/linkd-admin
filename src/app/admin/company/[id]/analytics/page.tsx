@@ -63,47 +63,47 @@ export default async function AnalyticsPage({
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             <header className="flex flex-col gap-4">
-                <Link href={`/admin/company/${id}`} className="text-sm text-gray-500 hover:text-black flex items-center gap-1">
+                <Link href={`/admin/company/${id}`} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
                     <ArrowLeft size={16} /> Volver a la Empresa
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Análisis de {company.name}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Análisis de {company.name}</h1>
                     <p className="text-muted-foreground">Rendimiento e interacciones en tiempo real</p>
                 </div>
             </header>
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg">
                             <Eye size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Vistas Totales</p>
-                            <p className="text-2xl font-bold">{totalViews}</p>
+                            <p className="text-sm text-muted-foreground font-medium">Vistas Totales</p>
+                            <p className="text-2xl font-bold text-foreground">{totalViews}</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-green-50 text-green-600 rounded-lg">
+                        <div className="p-3 bg-green-500/10 text-green-600 dark:text-green-400 rounded-lg">
                             <MousePointer2 size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Clics en Botones</p>
-                            <p className="text-2xl font-bold">{totalClicks}</p>
+                            <p className="text-sm text-muted-foreground font-medium">Clics en Botones</p>
+                            <p className="text-2xl font-bold text-foreground">{totalClicks}</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
+                        <div className="p-3 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-lg">
                             <TrendingUp size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Interacción Promedio</p>
-                            <p className="text-2xl font-bold">
+                            <p className="text-sm text-muted-foreground font-medium">Interacción Promedio</p>
+                            <p className="text-2xl font-bold text-foreground">
                                 {totalViews > 0 ? (totalClicks / totalViews * 100).toFixed(1) : 0}%
                             </p>
                         </div>
@@ -113,8 +113,8 @@ export default async function AnalyticsPage({
 
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Top Employees Table */}
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
                         <BarChart3 size={20} />
                         Desempeño por Empleado
                     </h3>
@@ -125,21 +125,21 @@ export default async function AnalyticsPage({
                                 <Link
                                     href={`/admin/company/${id}/analytics/${emp.id}`}
                                     key={emp.id}
-                                    className="flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors cursor-pointer"
+                                    className="flex items-center justify-between group hover:bg-muted p-2 rounded-lg transition-colors cursor-pointer"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold font-mono overflow-hidden">
+                                        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold font-mono overflow-hidden">
                                             {emp.photoUrl ? (
                                                 <img src={emp.photoUrl} alt={emp.name} className="w-full h-full object-cover" />
                                             ) : emp.name[0]}
                                         </div>
-                                        <span className="font-medium group-hover:text-blue-600 transition-colors">{emp.name}</span>
+                                        <span className="font-medium group-hover:text-primary transition-colors text-foreground">{emp.name}</span>
                                     </div>
                                     <div className="flex flex-col items-end">
-                                        <span className="text-sm font-bold">{emp._count?.clickLogs || 0}</span>
-                                        <div className="w-24 h-1.5 bg-gray-100 rounded-full mt-1 overflow-hidden">
+                                        <span className="text-sm font-bold text-foreground">{emp._count?.clickLogs || 0}</span>
+                                        <div className="w-24 h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
                                             <div
-                                                className="h-full bg-blue-500"
+                                                className="h-full bg-primary"
                                                 style={{ width: `${totalInteractions > 0 ? ((emp._count?.clickLogs || 0) / (bestEmployee?._count?.clickLogs || 1) * 100) : 0}%` }}
                                             />
                                         </div>
@@ -151,19 +151,19 @@ export default async function AnalyticsPage({
                 </div>
 
                 {/* Button Types Breakdown */}
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="text-lg font-semibold mb-4">Canales más Populares</h3>
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
+                    <h3 className="text-lg font-semibold mb-4 text-foreground">Canales más Populares</h3>
                     <div className="space-y-6">
-                        {clicksByType.length === 0 && <p className="text-gray-500 italic">No hay clics registrados todavía.</p>}
+                        {clicksByType.length === 0 && <p className="text-muted-foreground italic">No hay clics registrados todavía.</p>}
                         {clicksByType
                             .sort((a, b) => b._count._all - a._count._all)
                             .map((item) => (
                                 <div key={item.buttonType} className="space-y-2">
                                     <div className="flex justify-between text-sm">
-                                        <span className="capitalize font-medium text-gray-700">{item.buttonType || "Otro"}</span>
-                                        <span className="font-bold">{item._count._all} clics</span>
+                                        <span className="capitalize font-medium text-muted-foreground">{item.buttonType || "Otro"}</span>
+                                        <span className="font-bold text-foreground">{item._count._all} clics</span>
                                     </div>
-                                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-indigo-500"
                                             style={{ width: `${totalClicks > 0 ? (item._count._all / totalClicks * 100) : 0}%` }}

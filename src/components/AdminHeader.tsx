@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { LogOut } from "lucide-react";
 import { logout } from "@/app/authActions";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function AdminHeader() {
     const pathname = usePathname();
@@ -18,7 +19,7 @@ export function AdminHeader() {
             <div className="container flex h-14 items-center px-4 justify-between">
                 <div className="mr-4 flex">
                     <Link className="mr-4 md:mr-6 flex items-center space-x-2" href="/admin">
-                        <Image src="/logo.png" alt="LINKD" width={80} height={30} className="h-7 w-auto" />
+                        <Image src="/logo.png" alt="LINKD" width={80} height={30} className="h-7 w-auto dark:invert" />
                     </Link>
                     {showBack && (
                         <nav className="flex items-center text-sm font-medium">
@@ -29,9 +30,10 @@ export function AdminHeader() {
                     )}
                 </div>
 
-                <div className="flex items-center space-x-2 justify-end">
+                <div className="flex items-center space-x-4 justify-end">
+                    <ThemeToggle />
                     <form action={logout}>
-                        <button type="submit" className="p-2 text-red-500 hover:text-red-600 rounded-full hover:bg-red-50" title="Cerrar Sesión">
+                        <button type="submit" className="p-2 text-destructive hover:text-destructive/80 rounded-full hover:bg-destructive/10 transition-colors" title="Cerrar Sesión">
                             <LogOut size={20} />
                         </button>
                     </form>

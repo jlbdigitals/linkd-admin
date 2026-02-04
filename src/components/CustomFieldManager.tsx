@@ -102,14 +102,14 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
             {/* Custom Fields List */}
             {customFields.length > 0 && (
                 <div className="space-y-2">
-                    <p className="text-sm text-gray-500">Campos Personalizados:</p>
+                    <p className="text-sm text-muted-foreground">Campos Personalizados:</p>
                     {customFields.map((field) => {
                         const FieldIcon = (Icons as any)[field.icon] || Icons.Link;
                         return (
-                            <div key={field.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
+                            <div key={field.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border">
                                 <div className="flex items-center gap-3">
-                                    <FieldIcon size={18} className="text-gray-600" />
-                                    <span className="font-medium">{field.label}</span>
+                                    <FieldIcon size={18} className="text-muted-foreground" />
+                                    <span className="font-medium text-foreground">{field.label}</span>
                                 </div>
                                 <form action={deleteCustomField}>
                                     <input type="hidden" name="id" value={field.id} />
@@ -118,7 +118,7 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                                         type="submit"
                                         variant="ghost"
                                         size="sm"
-                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                        className="text-destructive hover:text-destructive/80 hover:bg-destructive/10"
                                     >
                                         <Trash2 size={16} />
                                     </Button>
@@ -136,31 +136,31 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                     <input type="hidden" name="icon" value={selectedIcon} />
 
                     <div className="space-y-1">
-                        <label className="text-xs font-medium text-gray-500">Nombre del Campo</label>
+                        <label className="text-xs font-medium text-muted-foreground">Nombre del Campo</label>
                         <input
                             name="label"
                             placeholder="ej: TikTok, YouTube, etc."
-                            className="w-full border p-2 rounded bg-gray-50"
+                            className="w-full border border-input p-2 rounded bg-background text-foreground"
                             required
                         />
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-medium text-gray-500">Placeholder (opcional)</label>
+                        <label className="text-xs font-medium text-muted-foreground">Placeholder (opcional)</label>
                         <input
                             name="placeholder"
                             placeholder="ej: URL de TikTok"
-                            className="w-full border p-2 rounded bg-gray-50"
+                            className="w-full border border-input p-2 rounded bg-background text-foreground"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-medium text-gray-500">Ícono</label>
-                        <div className="flex items-center gap-2 p-2 border rounded bg-gray-50">
+                        <label className="text-xs font-medium text-muted-foreground">Ícono</label>
+                        <div className="flex items-center gap-2 p-2 border border-input rounded bg-background text-foreground">
                             <IconComponent size={20} />
                             <span className="text-sm">{selectedIcon}</span>
                         </div>
-                        <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto p-2 border rounded">
+                        <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto p-2 border border-input rounded bg-background">
                             {POPULAR_ICONS.map((iconName) => {
                                 const Icon = (Icons as any)[iconName];
                                 return (
@@ -168,7 +168,7 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
                                         key={iconName}
                                         type="button"
                                         onClick={() => setSelectedIcon(iconName)}
-                                        className={`p-2 rounded hover:bg-gray-100 ${selectedIcon === iconName ? "bg-blue-100" : ""
+                                        className={`p-2 rounded hover:bg-muted transition-colors ${selectedIcon === iconName ? "bg-primary/20 text-primary" : "text-muted-foreground"
                                             }`}
                                     >
                                         <Icon size={20} />
@@ -192,17 +192,17 @@ export default function CustomFieldManager({ companyId, customFields, fieldVisib
             {/* Field Visibility Modal */}
             <Modal isOpen={showVisibilityModal} onClose={() => setShowVisibilityModal(false)} title="Visibilidad de Campos">
                 <div className="space-y-3">
-                    <p className="text-sm text-gray-600">Activa o desactiva los campos predeterminados:</p>
+                    <p className="text-sm text-muted-foreground">Activa o desactiva los campos predeterminados:</p>
                     {DEFAULT_FIELDS.map((field) => {
                         const isVisible = (visibility as any)[`show${field.key.charAt(0).toUpperCase() + field.key.slice(1)}`];
                         return (
-                            <div key={field.key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <span className="font-medium">{field.label}</span>
+                            <div key={field.key} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border">
+                                <span className="font-medium text-foreground">{field.label}</span>
                                 <button
                                     onClick={() => handleToggleVisibility(field.key, isVisible)}
                                     className={`p-2 rounded-full transition-colors ${isVisible
-                                        ? "bg-green-100 text-green-600 hover:bg-green-200"
-                                        : "bg-gray-200 text-gray-400 hover:bg-gray-300"
+                                        ? "bg-green-500/10 text-green-600 hover:bg-green-500/20"
+                                        : "bg-muted text-muted-foreground hover:bg-muted/80"
                                         }`}
                                 >
                                     {isVisible ? <Eye size={18} /> : <EyeOff size={18} />}

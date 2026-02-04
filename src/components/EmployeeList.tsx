@@ -60,31 +60,31 @@ export default function EmployeeList({
 
     return (
         <section className="space-y-4">
-            <h2 className="text-xl font-semibold">Empleados</h2>
+            <h2 className="text-xl font-semibold text-foreground">Empleados</h2>
             <div className="grid gap-3">
                 {employees.length === 0 && (
-                    <p className="text-gray-500 italic">No hay empleados todavía.</p>
+                    <p className="text-muted-foreground italic">No hay empleados todavía.</p>
                 )}
                 {employees.map((emp) => (
-                    <div key={emp.id} className="bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center group">
+                    <div key={emp.id} className="bg-card p-4 rounded-xl border border-border flex justify-between items-center group">
                         <div className="flex items-center gap-3">
                             {emp.photoUrl ? (
                                 <img
                                     src={emp.photoUrl}
                                     alt={emp.name}
-                                    className="w-10 h-10 rounded-full object-cover bg-gray-100"
+                                    className="w-10 h-10 rounded-full object-cover bg-muted"
                                 />
                             ) : (
-                                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500">
+                                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-bold text-muted-foreground">
                                     {emp.name[0]}
                                 </div>
                             )}
 
                             <div>
-                                <p className="text-sm font-medium text-black line-clamp-1">{emp.name}</p>
-                                <p className="text-xs text-gray-500 line-clamp-1">{emp.jobTitle}</p>
+                                <p className="text-sm font-medium text-foreground line-clamp-1">{emp.name}</p>
+                                <p className="text-xs text-muted-foreground line-clamp-1">{emp.jobTitle}</p>
                                 <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full font-medium">
+                                    <span className="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary rounded-full font-medium">
                                         {emp._count?.clickLogs || 0} interacciones
                                     </span>
                                 </div>
@@ -94,14 +94,14 @@ export default function EmployeeList({
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setEditingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                                className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Editar Empleado"
                             >
                                 <Pencil size={16} />
                             </button>
                             <button
                                 onClick={() => setDeletingEmployee(emp)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Eliminar Empleado"
                             >
                                 <Trash2 size={16} />
@@ -109,9 +109,9 @@ export default function EmployeeList({
                             <Link
                                 href={`/${companySlug}/${emp.slug}`}
                                 target="_blank"
-                                className="flex items-center gap-1 text-sm text-blue-600 hover:underline ml-1"
+                                className="flex items-center gap-1 text-sm text-primary hover:underline ml-1"
                             >
-                                <span className="font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-600">/{emp.slug}</span>
+                                <span className="font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">/{emp.slug}</span>
                                 <ExternalLink size={14} />
                             </Link>
                         </div>
@@ -142,15 +142,15 @@ export default function EmployeeList({
                 title="Eliminar Empleado"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-600">
-                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-black">{deletingEmployee?.name}</span>? Esta acción no se puede deshacer.
+                    <p className="text-muted-foreground">
+                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-foreground">{deletingEmployee?.name}</span>? Esta acción no se puede deshacer.
                     </p>
                     <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setDeletingEmployee(null)}>
                             Cancelar
                         </Button>
                         <form action={handleDelete}>
-                            <Button type="submit" className="bg-red-600 hover:bg-red-700 text-white">
+                            <Button type="submit" variant="destructive">
                                 Eliminar
                             </Button>
                         </form>

@@ -39,7 +39,7 @@ export default function CompanyHeader({ company }: { company: Company }) {
     return (
         <header className="flex flex-col gap-4">
             <div className="flex justify-between items-start">
-                <Link href="/admin" className="text-sm text-gray-500 hover:text-black flex items-center gap-1">
+                <Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
                     <ArrowLeft size={16} /> Volver al Tablero
                 </Link>
                 <Link
@@ -52,7 +52,7 @@ export default function CompanyHeader({ company }: { company: Company }) {
             </div>
             <div className="flex justify-between items-center group">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-3xl font-bold tracking-tight">{company.name}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">{company.name}</h1>
                     <Button
                         variant="outline"
                         size="sm"
@@ -80,60 +80,60 @@ export default function CompanyHeader({ company }: { company: Company }) {
                     >
                         <input type="hidden" name="id" value={company.id} />
                         <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500">Nombre de la Empresa</label>
+                            <label className="text-xs font-medium text-muted-foreground">Nombre de la Empresa</label>
                             <input
                                 name="name"
                                 defaultValue={company.name}
-                                className="w-full border p-2 rounded bg-white font-semibold text-lg"
+                                className="w-full border p-2 rounded bg-background border-input text-foreground font-semibold text-lg"
                                 required
                             />
                         </div>
 
-                        <div className="bg-gray-50 p-4 rounded-lg space-y-4 border border-gray-100">
-                            <h3 className="text-sm font-bold text-gray-700">Colores de Marca y Landing Page</h3>
+                        <div className="bg-muted/50 p-4 rounded-lg space-y-4 border border-border">
+                            <h3 className="text-sm font-bold text-foreground">Colores de Marca y Landing Page</h3>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-xs font-medium text-gray-500">Color Superior (Top)</label>
+                                    <label className="text-xs font-medium text-muted-foreground">Color Superior (Top)</label>
                                     <div className="flex gap-2 items-center">
                                         <input
                                             type="color"
                                             name="colorTop"
                                             value={previewColorTop}
                                             onChange={(e) => setPreviewColorTop(e.target.value)}
-                                            className="h-8 w-8 border border-gray-200 rounded bg-transparent p-0 overflow-hidden cursor-pointer"
+                                            className="w-10 h-10 flex-shrink-0 border border-border rounded-full bg-transparent p-0 overflow-hidden cursor-pointer appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
                                         />
                                         <input
                                             type="text"
                                             value={previewColorTop}
                                             onChange={(e) => setPreviewColorTop(e.target.value)}
-                                            className="border p-1.5 rounded bg-white w-full text-xs font-mono"
+                                            className="border border-input p-1.5 rounded bg-background text-foreground w-full text-xs font-mono"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-medium text-gray-500">Color Inferior (Bottom)</label>
+                                    <label className="text-xs font-medium text-muted-foreground">Color Inferior (Bottom)</label>
                                     <div className="flex gap-2 items-center">
                                         <input
                                             type="color"
                                             name="colorBottom"
                                             value={previewColorBottom}
                                             onChange={(e) => setPreviewColorBottom(e.target.value)}
-                                            className="h-8 w-8 border border-gray-200 rounded bg-transparent p-0 overflow-hidden cursor-pointer"
+                                            className="w-10 h-10 flex-shrink-0 border border-border rounded-full bg-transparent p-0 overflow-hidden cursor-pointer appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full"
                                         />
                                         <input
                                             type="text"
                                             value={previewColorBottom}
                                             onChange={(e) => setPreviewColorBottom(e.target.value)}
-                                            className="border p-1.5 rounded bg-white w-full text-xs font-mono"
+                                            className="border border-input p-1.5 rounded bg-background text-foreground w-full text-xs font-mono"
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-xs font-medium text-gray-500">Ángulo del Degradado (Grados)</label>
+                                <label className="text-xs font-medium text-muted-foreground">Ángulo del Degradado (Grados)</label>
                                 <div className="flex items-center gap-4">
                                     <input
                                         type="range"
@@ -142,18 +142,18 @@ export default function CompanyHeader({ company }: { company: Company }) {
                                         onChange={(e) => setPreviewAngle(Number(e.target.value))}
                                         min="0"
                                         max="360"
-                                        className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                        className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer"
                                     />
                                     <input
                                         type="number"
                                         value={previewAngle}
                                         onChange={(e) => setPreviewAngle(Number(e.target.value))}
-                                        className="w-16 border p-2 rounded bg-white text-xs font-mono text-center"
+                                        className="w-16 border border-input p-2 rounded bg-background text-foreground text-xs font-mono text-center"
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                            <div className="flex items-center gap-2 pt-2 border-t border-border">
                                 <input
                                     type="checkbox"
                                     id="isLightText"
@@ -161,10 +161,10 @@ export default function CompanyHeader({ company }: { company: Company }) {
                                     checked={previewLightText}
                                     onChange={(e) => setPreviewLightText(e.target.checked)}
                                     value="true"
-                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="w-4 h-4 rounded border-input bg-background text-primary focus:ring-primary"
                                 />
-                                <label htmlFor="isLightText" className="text-sm font-medium text-gray-700">
-                                    Usar texto claro (blanco) para fondos oscuros
+                                <label htmlFor="isLightText" className="text-sm font-medium text-foreground cursor-pointer">
+                                    Texto blanco
                                 </label>
                             </div>
 
@@ -182,9 +182,9 @@ export default function CompanyHeader({ company }: { company: Company }) {
 
                     {/* Preview Miniatura */}
                     <div className="w-48 flex-shrink-0">
-                        <p className="text-xs font-medium text-gray-500 mb-2 text-center">Vista previa</p>
+                        <p className="text-xs font-medium text-muted-foreground mb-2 text-center">Vista previa</p>
                         <div
-                            className="rounded-xl overflow-hidden shadow-lg border border-gray-200"
+                            className="rounded-xl overflow-hidden shadow-lg border border-border"
                             style={{
                                 background: `linear-gradient(${previewAngle}deg, ${previewColorTop} 0%, ${previewColorBottom} 100%)`,
                                 aspectRatio: "9/16",

@@ -63,19 +63,19 @@ export default async function CompanyPage({
                 />
 
                 {/* Add Employee Sidebar */}
-                <aside className="bg-white p-6 rounded-xl border border-gray-200 h-fit sticky top-8">
-                    <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                <aside className="bg-card p-6 rounded-xl border border-border h-fit sticky top-8">
+                    <h2 className="text-lg font-semibold mb-2 flex items-center gap-2 text-card-foreground">
                         <User size={20} />
                         Agregar Empleado
                     </h2>
 
                     {/* Employee Limit Indicator */}
                     <div className="mb-4">
-                        <div className="flex justify-between text-sm mb-1 text-gray-600">
+                        <div className="flex justify-between text-sm mb-1 text-muted-foreground">
                             <span>Uso del Plan</span>
                             <span>{company.employees.length} / {company.maxEmployees}</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div className="w-full bg-muted rounded-full h-2.5">
                             <div
                                 className={`h-2.5 rounded-full ${company.employees.length >= company.maxEmployees ? 'bg-red-500' : 'bg-blue-600'}`}
                                 style={{ width: `${Math.min((company.employees.length / company.maxEmployees) * 100, 100)}%` }}

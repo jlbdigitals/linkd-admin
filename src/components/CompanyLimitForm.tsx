@@ -17,17 +17,17 @@ export default function CompanyLimitForm({
             onClick={(e) => e.stopPropagation()}
         >
             <input type="hidden" name="id" value={companyId} />
-            <label className="text-xs text-gray-600">Límite:</label>
+            <label className="text-xs text-muted-foreground">Límite:</label>
             <input
                 type="number"
                 name="maxEmployees"
                 defaultValue={maxEmployees}
-                className="w-16 border rounded px-2 py-0.5 text-sm bg-white border-gray-300 text-gray-900"
+                className="w-16 border rounded px-2 py-0.5 text-sm bg-background border-input text-foreground"
                 min={1}
             />
             <button
                 type="submit"
-                className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
             >
                 Guardar
             </button>

@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Carlos Martínez
+ORG:Coca-Cola
+TITLE:Director de Marketing
+EMAIL:carlos.martinez@cocacola.com
+TEL;TYPE=CELL:+525551234567
+TEL;TYPE=WHATSAPP:+525551234567
+URL:https://cocacola.com/carlos
+URL;type=LinkedIn:https://linkedin.com/in/carlosmartinez
+URL;type=Instagram:https://instagram.com/carlosmkt
+END:VCARD

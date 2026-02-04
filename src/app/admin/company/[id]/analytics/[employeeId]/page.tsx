@@ -29,22 +29,22 @@ export default async function EmployeeAnalyticsPage({
             <header className="flex flex-col gap-4">
                 <Link
                     href={`/admin/company/${id}/analytics`}
-                    className="text-sm text-gray-500 hover:text-black flex items-center gap-1"
+                    className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
                 >
                     <ArrowLeft size={16} /> Volver a Analíticas de Empresa
                 </Link>
                 <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden relative">
+                    <div className="h-12 w-12 rounded-full bg-muted overflow-hidden relative">
                         {employee.photoUrl ? (
                             <img src={employee.photoUrl} alt={employee.name} className="object-cover w-full h-full" />
                         ) : (
-                            <div className="flex items-center justify-center h-full text-lg font-bold text-gray-500">
+                            <div className="flex items-center justify-center h-full text-lg font-bold text-muted-foreground">
                                 {employee.name[0]}
                             </div>
                         )}
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">{employee.name}</h1>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">{employee.name}</h1>
                         <p className="text-muted-foreground">{employee.jobTitle}</p>
                     </div>
                 </div>
@@ -52,36 +52,36 @@ export default async function EmployeeAnalyticsPage({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg">
                             <Eye size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Vistas de Perfil</p>
-                            <p className="text-2xl font-bold">{totalViews}</p>
+                            <p className="text-sm text-muted-foreground font-medium">Vistas de Perfil</p>
+                            <p className="text-2xl font-bold text-foreground">{totalViews}</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-green-50 text-green-600 rounded-lg">
+                        <div className="p-3 bg-green-500/10 text-green-600 dark:text-green-400 rounded-lg">
                             <MousePointer2 size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Clics Totales</p>
-                            <p className="text-2xl font-bold">{totalClicks}</p>
+                            <p className="text-sm text-muted-foreground font-medium">Clics Totales</p>
+                            <p className="text-2xl font-bold text-foreground">{totalClicks}</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
+                        <div className="p-3 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-lg">
                             <TrendingUp size={24} />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500 font-medium">Tasa de Conversión (CTR)</p>
-                            <p className="text-2xl font-bold">{ctr}%</p>
+                            <p className="text-sm text-muted-foreground font-medium">Tasa de Conversión (CTR)</p>
+                            <p className="text-2xl font-bold text-foreground">{ctr}%</p>
                         </div>
                     </div>
                 </div>
@@ -89,21 +89,21 @@ export default async function EmployeeAnalyticsPage({
 
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Channel Breakdown */}
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit">
-                    <h3 className="text-lg font-semibold mb-6">Canales Preferidos</h3>
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm h-fit">
+                    <h3 className="text-lg font-semibold mb-6 text-foreground">Canales Preferidos</h3>
                     <div className="space-y-4">
-                        {clicksByType.length === 0 && <p className="text-gray-500 italic">No hay datos suficientes.</p>}
+                        {clicksByType.length === 0 && <p className="text-muted-foreground italic">No hay datos suficientes.</p>}
                         {clicksByType
                             .sort((a, b) => b._count._all - a._count._all)
                             .map((item) => (
                                 <div key={item.buttonType} className="space-y-2">
                                     <div className="flex justify-between text-sm">
-                                        <span className="capitalize font-medium text-gray-700">
+                                        <span className="capitalize font-medium text-muted-foreground">
                                             {item.buttonType || "Otro"}
                                         </span>
-                                        <span className="font-bold">{item._count._all}</span>
+                                        <span className="font-bold text-foreground">{item._count._all}</span>
                                     </div>
-                                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-indigo-500"
                                             style={{ width: `${totalClicks > 0 ? (item._count._all / totalClicks * 100) : 0}%` }}
@@ -116,32 +116,32 @@ export default async function EmployeeAnalyticsPage({
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
+                    <h3 className="text-lg font-semibold mb-6 flex items-center gap-2 text-foreground">
                         <Calendar size={18} />
                         Actividad Reciente
                     </h3>
-                    <div className="space-y-0 divide-y">
-                        {recentActivity.length === 0 && <p className="text-gray-500 italic">No hay actividad reciente.</p>}
+                    <div className="space-y-0 divide-y divide-border">
+                        {recentActivity.length === 0 && <p className="text-muted-foreground italic">No hay actividad reciente.</p>}
                         {recentActivity.map((log) => (
                             <div key={log.id} className="py-3 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className={`p-1.5 rounded-full ${log.interactionType === 'CLICK'
-                                        ? 'bg-green-100 text-green-600'
-                                        : 'bg-blue-100 text-blue-600'
+                                        ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                                        : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
                                         }`}>
                                         {log.interactionType === 'CLICK' ? <MousePointer2 size={12} /> : <Eye size={12} />}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium">
+                                        <p className="text-sm font-medium text-foreground">
                                             {log.interactionType === 'CLICK' ? `Clic en ${log.buttonType}` : 'Perfil visitado'}
                                         </p>
-                                        <p className="text-xs text-gray-400">
+                                        <p className="text-xs text-muted-foreground">
                                             {new Date(log.createdAt).toLocaleDateString()}
                                         </p>
                                     </div>
                                 </div>
-                                <span className="text-xs text-gray-400 font-mono">
+                                <span className="text-xs text-muted-foreground font-mono">
                                     {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>

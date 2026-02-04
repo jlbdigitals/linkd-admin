@@ -23,7 +23,7 @@ export default function DeleteCompanyButton({ companyId, companyName, employeeCo
                     e.stopPropagation();
                     setIsOpen(true);
                 }}
-                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full transition-colors"
                 title="Eliminar Empresa"
             >
                 <Trash2 size={20} />
@@ -35,11 +35,11 @@ export default function DeleteCompanyButton({ companyId, companyName, employeeCo
                 title="¿Eliminar Empresa?"
             >
                 <div className="space-y-4">
-                    <p className="text-gray-600">
-                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-black">{companyName}</span>?
+                    <p className="text-muted-foreground">
+                        ¿Estás seguro de que quieres eliminar a <span className="font-semibold text-foreground">{companyName}</span>?
                     </p>
-                    <div className="bg-red-50 p-3 rounded-lg border border-red-100">
-                        <p className="text-sm text-red-600">
+                    <div className="bg-destructive/10 p-3 rounded-lg border border-destructive/20">
+                        <p className="text-sm text-destructive">
                             <strong>Aviso:</strong> Esta empresa tiene <strong>{employeeCount}</strong> empleado(s) que también serán enviados a la papelera. Podrás restaurarlos desde la papelera en los próximos 30 días.
                         </p>
                     </div>

@@ -17,7 +17,7 @@ export default function PermanentDeleteButton({ companyId }: { companyId: string
         <Button
             variant="ghost"
             size="sm"
-            className="text-red-600 hover:bg-red-50 hover:text-red-700"
+            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
             onClick={handleDelete}
         >
             <Trash2 size={16} />

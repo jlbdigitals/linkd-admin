@@ -46,13 +46,13 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md border border-gray-200">
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <div className="bg-card p-8 rounded-xl shadow-xl w-full max-w-md border border-border">
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-6">
-                        <Image src="/logo.png" alt="LINKD" width={120} height={45} className="h-12 w-auto" />
+                        <Image src="/logo.png" alt="LINKD" width={120} height={45} className="h-12 w-auto dark:invert" />
                     </div>
-                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Acceso Administrativo</h1>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Acceso Administrativo</h1>
                     <p className="text-muted-foreground mt-2">
                         {step === "email"
                             ? "Ingresa tu correo para recibir un código de acceso."
@@ -63,7 +63,7 @@ export default function LoginPage() {
                 </div>
 
                 {error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm text-center border border-red-100">
+                    <div className="bg-destructive/10 text-destructive p-3 rounded-lg mb-6 text-sm text-center border border-destructive/20 font-medium">
                         {error}
                     </div>
                 )}
@@ -71,13 +71,13 @@ export default function LoginPage() {
                 {step === "email" ? (
                     <form action={handleRequestCode} className="space-y-5">
                         <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-gray-700 block">Correo Electrónico</label>
+                            <label className="text-sm font-semibold text-foreground block">Correo Electrónico</label>
                             <input
                                 type="email"
                                 name="email"
                                 required
                                 placeholder="tu@empresa.com"
-                                className="w-full border p-2.5 rounded-lg bg-white border-gray-300 text-black text-base focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                className="w-full border p-2.5 rounded-lg bg-background border-input text-foreground text-base focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                             />
                         </div>
                         <SubmitButton label="Enviar Código" />
@@ -85,7 +85,7 @@ export default function LoginPage() {
                 ) : (
                     <form action={handleVerifyCode} className="space-y-5">
                         <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-gray-700 block">
+                            <label className="text-sm font-semibold text-foreground block">
                                 {isMaster ? "Contraseña" : "Código de Verificación"}
                             </label>
                             <input
@@ -94,7 +94,7 @@ export default function LoginPage() {
                                 required
                                 defaultValue={debugCode}
                                 placeholder={isMaster ? "••••••••" : "123456"}
-                                className={`w-full border p-2.5 rounded-lg bg-white border-gray-300 text-black focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none ${!isMaster ? 'font-mono text-center text-xl tracking-widest' : 'text-base'}`}
+                                className={`w-full border p-2.5 rounded-lg bg-background border-input text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ${!isMaster ? 'font-mono text-center text-xl tracking-widest' : 'text-base'}`}
                                 maxLength={isMaster ? 32 : 6}
                             />
                         </div>
@@ -102,7 +102,7 @@ export default function LoginPage() {
                         <button
                             type="button"
                             onClick={() => setStep("email")}
-                            className="w-full text-sm text-gray-500 hover:text-gray-800 underline mt-2 transition-colors"
+                            className="w-full text-sm text-muted-foreground hover:text-foreground underline mt-2 transition-colors"
                         >
                             Cambiar correo electrónico
                         </button>
