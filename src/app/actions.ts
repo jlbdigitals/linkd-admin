@@ -205,11 +205,6 @@ export async function updateEmployee(formData: FormData) {
         include: { company: true }
     });
 
-    // Handle custom field values - delete old ones and create new ones
-    await prisma.employeeCustomField.deleteMany({
-        where: { employeeId: id }
-    });
-
     const customFieldEntries = Array.from(formData.entries())
         .filter(([key]) => key.startsWith("customField_"))
         .map(([key, value]) => ({
@@ -219,11 +214,15 @@ export async function updateEmployee(formData: FormData) {
         }))
         .filter(entry => entry.value.trim() !== "");
 
-    if (customFieldEntries.length > 0) {
-        await prisma.employeeCustomField.createMany({
-            data: customFieldEntries
-        });
-    }
+    // Use a transaction to ensure atomicity
+    await prisma.$transaction([
+        prisma.employeeCustomField.deleteMany({
+            where: { employeeId: id }
+        }),
+        ...(customFieldEntries.length > 0
+            ? [prisma.employeeCustomField.createMany({ data: customFieldEntries })]
+            : [])
+    ]);
 
     revalidatePath(`/admin/company/${companyId}`);
     // Revalidate the public landing page

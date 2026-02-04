@@ -49,6 +49,8 @@ COPY --from=builder /app/node_modules ./node_modules
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/healthcheck.js ./healthcheck.js
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 
 # Entrypoint script
 COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
@@ -63,5 +65,8 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node healthcheck.js || exit 1
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
