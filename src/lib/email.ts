@@ -2,8 +2,8 @@ import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false, // true for 465, false for other ports
+  port: parseInt(process.env.SMTP_PORT || '465'),
+  secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465, // true for 465, false for other ports
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -90,6 +90,35 @@ export async function sendLoginCode(email: string, code: string) {
   try {
     await transporter.sendMail(mailOptions);
     console.log(`Login code sent to ${email}`);
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return { success: false, error };
+  }
+}
+
+export async function sendEmail({
+  to,
+  subject,
+  text,
+  html,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+  html?: string;
+}) {
+  const mailOptions = {
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to,
+    subject,
+    text,
+    html,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent to ${to}`);
     return { success: true };
   } catch (error) {
     console.error('Error sending email:', error);

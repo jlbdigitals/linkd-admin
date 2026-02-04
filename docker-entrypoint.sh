@@ -13,17 +13,6 @@ fi
 
 echo "DATABASE_URL is set: $DATABASE_URL"
 
-# Create data directory with proper permissions
-echo "Creating /app/data directory..."
-mkdir -p /app/data
-
-# For fresh deployment, remove old database
-if [ -f "/app/data/database.sqlite" ]; then
-  echo "Removing old database for clean migration..."
-  rm -f /app/data/database.sqlite
-  rm -f /app/data/database.sqlite-journal
-fi
-
 # Run Prisma migrations
 echo "Running prisma migrate deploy..."
 if [ -x "./node_modules/.bin/prisma" ]; then
