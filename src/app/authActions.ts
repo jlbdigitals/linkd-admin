@@ -81,11 +81,28 @@ export async function requestLoginCode(formData: FormData) {
         console.log(`========================================\n`);
     }
 
+    // Always try to send email in production if SMTP is configured
+    console.log('SMTP Configuration check:', {
+        hasUser: !!process.env.SMTP_USER,
+        hasPass: !!process.env.SMTP_PASS,
+        user: process.env.SMTP_USER ? `${process.env.SMTP_USER.substring(0, 3)}***` : 'NOT SET',
+        nodeEnv: process.env.NODE_ENV
+    });
+
     if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-        const emailResult = await sendLoginCode(email, code);
-        if (!emailResult.success) {
-            console.error('Failed to send email, but code is still valid');
+        try {
+            console.log(`Attempting to send login code to ${email}...`);
+            const emailResult = await sendLoginCode(email, code);
+            if (emailResult.success) {
+                console.log(`✅ Email sent successfully to ${email}`);
+            } else {
+                console.error('❌ Failed to send email:', emailResult.error);
+            }
+        } catch (error) {
+            console.error('❌ Exception while sending email:', error);
         }
+    } else {
+        console.warn('⚠️ SMTP not configured, email will not be sent. Code:', isDev ? code : '[hidden in production]');
     }
 
     return { success: true, email, debugCode: isDev ? code : undefined };
