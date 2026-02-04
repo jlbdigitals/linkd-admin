@@ -39,13 +39,13 @@ export async function requestLoginCode(formData: FormData) {
         }
     }
 
+    // Custom rule: jaime@digitals.cl is a Master User with a fixed password
+    if (email === "jaime@digitals.cl") {
+        return { success: true, email, isMaster: true };
+    }
+
     // Generate 6 digit code
     let code = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Custom rule: jaime@digitals.cl always uses 987987
-    if (email === "jaime@digitals.cl") {
-        code = "987987";
-    }
 
     const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
@@ -113,33 +113,45 @@ export async function requestLoginCode(formData: FormData) {
 
 export async function verifyLoginCode(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
-    const code = formData.get("code") as string;
+    const codeOrPass = formData.get("code") as string;
 
-    if (!email || !code) {
+    if (!email || !codeOrPass) {
         return { error: "Faltan datos." };
     }
 
-    // Find token
-    const tokenRecord = await prisma.verificationToken.findFirst({
-        where: {
-            identifier: email,
-            token: code
+    // Master User Bypass
+    if (email === "jaime@digitals.cl") {
+        if (codeOrPass !== "e8l4de3.") {
+            return { error: "Contraseña incorrecta." };
         }
-    });
+        // Valid master login!
+    } else {
+        // Standard OTP verification
+        const tokenRecord = await prisma.verificationToken.findFirst({
+            where: {
+                identifier: email,
+                token: codeOrPass
+            }
+        });
 
-    if (!tokenRecord) {
-        return { error: "Código inválido." };
+        if (!tokenRecord) {
+            return { error: "Código inválido." };
+        }
+
+        if (tokenRecord.expires < new Date()) {
+            await prisma.verificationToken.delete({
+                where: {
+                    identifier_token: { identifier: email, token: codeOrPass }
+                }
+            });
+            return { error: "El código ha expirado." };
+        }
+
+        // Valid! Clean up
+        await prisma.verificationToken.deleteMany({
+            where: { identifier: email }
+        });
     }
-
-    if (tokenRecord.expires < new Date()) {
-        await prisma.verificationToken.delete({ where: { identifier_token: { identifier: email, token: code } } });
-        return { error: "El código ha expirado." };
-    }
-
-    // Valid! Clean up and Login
-    await prisma.verificationToken.deleteMany({
-        where: { identifier: email }
-    });
 
     // Determine Role
     const superAdmin = await prisma.superAdmin.findUnique({ where: { email } });

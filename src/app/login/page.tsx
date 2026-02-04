@@ -17,6 +17,7 @@ function SubmitButton({ label }: { label: string }) {
 
 export default function LoginPage() {
     const [step, setStep] = useState<"email" | "code">("email");
+    const [isMaster, setIsMaster] = useState(false);
     const [email, setEmail] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [debugCode, setDebugCode] = useState<string>("");
@@ -28,6 +29,7 @@ export default function LoginPage() {
             setError(res.error);
         } else if (res?.success) {
             setEmail(res.email);
+            setIsMaster(!!res.isMaster);
             if (res.debugCode) setDebugCode(res.debugCode);
             setStep("code");
         }
@@ -54,7 +56,9 @@ export default function LoginPage() {
                     <p className="text-muted-foreground mt-2">
                         {step === "email"
                             ? "Ingresa tu correo para recibir un código de acceso."
-                            : `Hemos enviado un código a ${email}`}
+                            : isMaster
+                                ? "Ingresa tu contraseña maestra por favor."
+                                : `Hemos enviado un código a ${email}`}
                     </p>
                 </div>
 
@@ -81,15 +85,17 @@ export default function LoginPage() {
                 ) : (
                     <form action={handleVerifyCode} className="space-y-5">
                         <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-gray-700 block">Código de Verificación</label>
+                            <label className="text-sm font-semibold text-gray-700 block">
+                                {isMaster ? "Contraseña" : "Código de Verificación"}
+                            </label>
                             <input
-                                type="text"
+                                type={isMaster ? "password" : "text"}
                                 name="code"
                                 required
                                 defaultValue={debugCode}
-                                placeholder="123456"
-                                className="w-full border p-2.5 rounded-lg bg-white border-gray-300 font-mono text-center text-xl tracking-widest text-black focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                                maxLength={6}
+                                placeholder={isMaster ? "••••••••" : "123456"}
+                                className={`w-full border p-2.5 rounded-lg bg-white border-gray-300 text-black focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none ${!isMaster ? 'font-mono text-center text-xl tracking-widest' : 'text-base'}`}
+                                maxLength={isMaster ? 32 : 6}
                             />
                         </div>
                         <SubmitButton label="Validar y Entrar" />
