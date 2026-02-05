@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import { requestLoginCode, verifyLoginCode } from "../authActions";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +22,18 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [debugCode, setDebugCode] = useState<string>("");
+    const { theme, systemTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Determine current theme
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    // White logo for light mode, black logo for dark mode
+    const logoSrc = currentTheme === 'dark' ? '/logo.png' : '/logo-white.png';
 
     async function handleRequestCode(formData: FormData) {
         setError(null);
@@ -50,7 +63,18 @@ export default function LoginPage() {
             <div className="bg-card p-8 rounded-xl shadow-xl w-full max-w-md border border-border">
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-6">
-                        <Image src="/logo.png" alt="LINKD" width={120} height={45} className="h-12 w-auto dark:invert" />
+                        {mounted ? (
+                            <Image
+                                src={logoSrc}
+                                alt="LINKD"
+                                width={120}
+                                height={45}
+                                className="h-12 w-auto"
+                                priority
+                            />
+                        ) : (
+                            <div className="h-12 w-[120px]" />
+                        )}
                     </div>
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">Acceso Administrativo</h1>
                     <p className="text-muted-foreground mt-2">
