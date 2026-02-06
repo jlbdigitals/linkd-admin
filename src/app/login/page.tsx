@@ -32,8 +32,8 @@ export default function LoginPage() {
 
     // Determine current theme
     const currentTheme = theme === 'system' ? systemTheme : theme;
-    // White logo for light mode, black logo for dark mode
-    const logoSrc = currentTheme === 'dark' ? '/logo.png' : '/logo-white.png';
+    // Black logo for light mode, white logo for dark mode
+    const logoSrc = currentTheme === 'dark' ? '/logo-white.png' : '/logo.png';
 
     async function handleRequestCode(formData: FormData) {
         setError(null);

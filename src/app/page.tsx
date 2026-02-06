@@ -16,8 +16,8 @@ export default function Home() {
 
   // Determine current theme
   const currentTheme = theme === 'system' ? systemTheme : theme;
-  // White logo for light mode, black logo for dark mode
-  const logoSrc = currentTheme === 'dark' ? '/logo.png' : '/logo-white.png';
+  // Black logo for light mode, white logo for dark mode
+  const logoSrc = currentTheme === 'dark' ? '/logo-white.png' : '/logo.png';
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8 gap-6 relative overflow-hidden">
