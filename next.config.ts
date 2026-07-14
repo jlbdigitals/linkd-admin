@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'linkd.cl',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.dicebear.com',
       },
       {
